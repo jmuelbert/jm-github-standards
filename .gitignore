@@ -1,0 +1,128 @@
+# ====================================================================
+# PROJECT CORE (Modern Tooling)
+# ====================================================================
+.venv/
+node_modules/
+.lefthook/
+.cache/
+.cspellcache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+megalinter-reports/
+.mega-linter.log
+*.bak
+*.swp
+.directory
+
+# ====================================================================
+# BUILD & COMPILATION (Global Patterns)
+# ====================================================================
+[Bb]uild/
+[Dd]ebug/
+[Oo]ut/
+[Tt]esting/
+target/
+dist/
+bin/
+# Compiled objects, libraries and executables
+*.o
+*.obj
+*.so
+*.so.*
+*.a
+*.lib
+*.la
+*.lai
+*.lo
+*.slo
+*.dll
+*.dylib
+*.exe
+*.out
+*.app
+*.pdb
+*.ilk
+*.exp
+
+# ====================================================================
+# LANGUAGES SPECIFIC
+# ====================================================================
+# Python
+__pycache__/
+*.py[codz]
+*$py.class
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.pdm-python
+.pdm-build/
+
+# Rust
+**/*.rs.bk
+**/mutants.out*/
+
+# C++ & CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+CMakeUserPresets.json
+
+# Qt
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+/.qmake.cache
+/.qmake.stash
+*.pro.user*
+*_qmlcache.qrc
+
+# ====================================================================
+# DOCUMENTATION & CONFIG
+# ====================================================================
+/site/
+.vale/
+# Important: Do NOT ignore .github/config/styles if you commit them
+
+# ====================================================================
+# IDE & OS
+# ====================================================================
+.idea/
+.vscode/
+*.iml
+*.autosave
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# ====================================================================
+# DATABASE & LOGS
+# ====================================================================
+*.log
+*.sqlite*
+*.db
+*.db-*
+*.db3
+*.db3-*
+.env
+.envrc
+.cspellcache

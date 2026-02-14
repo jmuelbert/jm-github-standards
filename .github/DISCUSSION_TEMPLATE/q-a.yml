@@ -1,0 +1,54 @@
+---
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# SPDX-FileCopyrightText: 2026 - present Jürgen Mülbert <juergen.muelbert@gmail.com>
+# yaml-language-server: $schema=https://json.schemastore.org/github-discussion-0.1.0.json
+
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🙋 Support & Questions
+        Thank you for using **jm-github-standards**! 🦜🔗
+
+        Since this project focuses on CI/CD, linting, and governance workflows, providing structured information helps the community answer your questions more efficiently.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Preparation
+      options:
+        - label: I have read the [documentation](https://jmuelbert.github.io/jm-github-standards/).
+          required: true
+        - label: I have searched the [discussions](https://github.com/jmuelbert/jm-github-standards/discussions) for similar questions.
+          required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What are you trying to achieve or which part of the standards is unclear?
+      placeholder: e.g., How do I extend the MegaLinter task for a pure Go project?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context & Environment
+      description: |
+        In what environment is this happening? (e.g., OS, local Task version, or GitHub Actions log).
+        Please paste relevant error messages from your terminal or CI logs here.
+      placeholder: |
+        OS: Windows 11 / Task version: 3.38.0
+        Error message: "task: [lint] exit status 1"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Commitment
+      options:
+        - label: I commit to marking the answer as "accepted" once my issue is resolved.
+          required: true

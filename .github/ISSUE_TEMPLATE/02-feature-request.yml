@@ -1,0 +1,61 @@
+---
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# SPDX-FileCopyrightText: 2026 - present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: 💡 Feature Request
+description: Propose a new standard, workflow, or automation.
+title: "🚀 [Request]: <title>"
+labels: [request, enhancement]
+assignees:
+  - jmuelbert
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping us evolve jm-github-standards!
+        Check if your idea already exists in our [Discussions](https://github.com/jmuelbert/jm-github-standards/discussions).
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: What is the scope of this request?
+      options:
+        - GitHub Workflows
+        - Taskfile / Local Automation
+        - Repository Configuration (.github files)
+        - Documentation / Standards Guide
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Proposal Summary
+      description: A clear and concise description of the new feature.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation and Context
+      description: Why should this be part of the "jm-github-standards"? What gap does it fill?
+    validations:
+      required: true
+
+  - type: textarea
+    id: prior-art
+    attributes:
+      label: Prior Art & Examples
+      description: Are there other projects or official standards (e.g. GitHub Docs, OpenSSF) using this?
+      placeholder: |
+        - Link to reference
+        - Competitive analysis
+
+  - type: checkboxes
+    id: participation
+    attributes:
+      label: Participation
+      options:
+        - label: I am willing to submit a pull request for this feature.

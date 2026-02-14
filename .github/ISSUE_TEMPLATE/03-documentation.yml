@@ -1,0 +1,72 @@
+---
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# SPDX-FileCopyrightText: 2026 - present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: 📖 Documentation
+description: Report an issue or missing content in the jm-github-standards documentation.
+title: "DOC: <Please write a comprehensive title>"
+labels: [03 - Documentation]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping us improve the documentation!
+
+        **Important:** - Only report issues with documentation here (missing topics, mistakes).
+        - Do **NOT** use this for usage questions. Instead, use [GitHub Discussions](https://github.com/jmuelbert/jm-github-standards/discussions).
+        # - Search the [existing documentation](https://jmuelbert.github.io/developer/jm-github-standards/) first.
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Type of documentation issue
+      description: What kind of improvement are we looking at?
+      options:
+        - Typo or Grammar
+        - Outdated information
+        - Missing documentation for a workflow/task
+        - Translation error
+        - Broken link or formatting
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I added a descriptive title to this issue.
+          required: true
+        - label: I checked if a similar issue already exists.
+          required: true
+
+  - type: input
+    id: page-url
+    attributes:
+      label: Affected Page URL
+      description: Provide a link to the page you are referring to (if applicable).
+      placeholder: https://jmuelbert.github.io/jm-github-standards/...
+
+  - type: textarea
+    id: current-issue
+    attributes:
+      label: Issue with current documentation
+      description: Describe the mistake or the part that is unclear.
+      placeholder: The description of the 'task lint' command is missing the following detail...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change or new content
+      description: What should be there instead? Or what new topic should be added?
+      placeholder: I suggest adding a section about...
+
+  - type: checkboxes
+    id: participation
+    attributes:
+      label: Participation
+      options:
+        - label: I am willing to submit a pull request to fix this.
