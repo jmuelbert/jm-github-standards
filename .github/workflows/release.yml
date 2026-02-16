@@ -1,6 +1,6 @@
 ---
 # SPDX-License-Identifier: EUPL-1.2
-# SPDX-FileCopyrightText: 2025-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
 
 name: Release
 on:
@@ -25,9 +25,9 @@ jobs:
       - name: 🏷️ Get Config from YAML
         id: get-version
         run: |
-          # Version extrahieren
+          # Extract version
           VERSION="$(grep 'next-milestone:' .github/branch-name-patterns.yml | awk '{print $2}' | tr -d '"')"
-          # Pre-release Status extrahieren (true/false)
+          # Pre-release: Extract status (true/false)
           PRERELEASE="$(grep 'is-prerelease:' .github/branch-name-patterns.yml | awk '{print $2}')"
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
@@ -35,11 +35,11 @@ jobs:
 
   # Job 2: Call Shared Workflow
   call-release:
-    needs: prepare # Wartet auf den ersten Job
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-generic-release.yml@main
+    needs: prepare # Wait for the first job
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
     with:
-      # Hier kannst du Inputs übergeben, falls nötig
+      # Here you can pass inputs if needed
       build_command: make build
     secrets:
-      # Der Token wird aus dem Output des ersten Jobs übergeben
+      # The token is passed from the first job
       RELEASE_TOKEN: ${{ needs.prepare.outputs.token }}
