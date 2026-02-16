@@ -9,20 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- **Workflows:** Organized GitHub Actions into logical groups (Pipeline, Governance, Maintenance) for better maintainability.
-- **Documentation:** MkDocs structure featuring automated Markdown includes from the repository root.
-- **GitHub:** Fundamental configures for github workflows and megalinter.
-- **Configurations:** Initial set of configuration files for local checks.
-- **Local:** Initial set of local configurations for development and testing.
-
-### Changed
-
-- **Workflows:** Organized GitHub Actions into logical groups (Pipeline, Governance, Maintenance) for better maintainability.
-
-### Fixed
-
-- **README:** Structure and unreachable links.
-
 ## [0.1.0] - 2026-02-14
 
 ### Added
@@ -32,3 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Licensing:** Dual-license strategy (EUPL-1.2 for code, CC-BY-4.0 for documentation) with REUSE compliance.
 - **README:** Modern Hatch-style layout with dynamic status badges and reference-style links.
 - **GitHub:** Fundamental configures like gitignore
+
+<!--
+[Unreleased]: https://github.com/jmuelbert/jm-github-standards/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/jmuelbert/jm-github-standards/releases/tag/v0.1.0
+-->

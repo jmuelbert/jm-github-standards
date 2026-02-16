@@ -1,0 +1,129 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Repository Maintenance
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    # Optional: Inputs for days before stale, if a repo wants to deviate
+    inputs:
+      days-before-issue-stale:
+        description: Days before an issue is considered stale
+        type: number
+        default: 30
+      days-before-pr-stale:
+        description: Days before a pull request is considered stale
+        type: number
+        default: 45
+      days-before-issue-close:
+        description: Days before an issue is closed due to inactivity
+        type: number
+        default: 5
+      days-before-pr-close:
+        description: Days before a pull request is closed due to inactivity
+        type: number
+        default: 10
+
+    secrets:
+      secret-token:
+        description: Secret token for GitHub API (e.g. GITHUB_TOKEN or PAT)
+        required: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  repolinter:
+    name: Lint Repository Standards
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout Repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Run Repolinter
+        uses: newrelic/repolinter-action@3f4448f855c351e9695b24524a4111c7847b84cb # v1.7.0
+        with:
+          # Using the centralized config for all repositories
+          config_url: https://raw.githubusercontent.com/jmuelbert/github-standards/main/.github/config/repolinter.json
+          output_type: markdown
+
+  maintenance:
+    name: Cleanup & Welcome
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout Repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # 1. Greet New Contributors
+      - name: 👋 Welcome New Contributors
+        uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            ## Welcome to the Project! 🚀
+            Thank you for opening your first issue here. We appreciate your contribution to our standards!
+            Please make sure you have read the [Contribution Guidelines](https://github.com/jmuelbert/jm-github-standards/blob/main/.gitub/CONTRIBUTING.md).
+          pr-message: |
+            ## Nice to meet you! 🥂
+            Thank you for your first Pull Request! Our maintainers will review your changes as soon as possible.
+            In the meantime, please ensure all CI checks are passing.
+
+      # 2. Process Stale Items with dynamic inputs
+      - name: 🧹 Process Stale Items
+        id: stale
+        uses: actions/stale@997185467fa4f803885201cee163a9f38240193d # v10.1.1
+        with:
+          # Issues configuration
+          stale-issue-message: This issue is stale because it has been inactive for ${{ inputs.days-before-issue-stale }} days.
+          close-issue-message: This issue was closed due to inactivity.
+          days-before-issue-stale: ${{ inputs.days-before-issue-stale }}
+          days-before-issue-close: ${{ inputs.days-before-issue-close }}
+          stale-issue-label: chore # Using your standard 'chore' label
+
+          # PR configuration
+          stale-pr-message: This PR is stale because it has been inactive for ${{ inputs.days-before-pr-stale }} days.
+          close-pr-message: This PR was closed due to inactivity.
+          days-before-pr-stale: ${{ inputs.days-before-pr-stale }}
+          days-before-pr-close: ${{ inputs.days-before-pr-close }}
+          stale-pr-label: chore
+
+          # Exemptions based on your labels.json
+          exempt-issue-labels: |
+            security
+            pinned
+            bug
+            enhancement
+          exempt-pr-labels: |
+            security
+            pinned
+            dependencies
+
+          delete-branch: true
+          enable-statistics: true

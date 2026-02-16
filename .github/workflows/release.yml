@@ -1,0 +1,45 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Release
+on:
+  push:
+    branches: [main]
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      token: ${{ steps.generate-token.outputs.token }}
+      next_version: ${{ steps.get-version.outputs.version }}
+      is_prerelease: ${{ steps.get-version.outputs.prerelease }}
+    steps:
+      - name: 🔑 Generate Token
+        id: generate-token
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.1.1
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+      - name: 🏷️ Get Config from YAML
+        id: get-version
+        run: |
+          # Extract version
+          VERSION="$(grep 'next-milestone:' .github/branch-name-patterns.yml | awk '{print $2}' | tr -d '"')"
+          # Pre-release: Extract status (true/false)
+          PRERELEASE="$(grep 'is-prerelease:' .github/branch-name-patterns.yml | awk '{print $2}')"
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+
+  # Job 2: Call Shared Workflow
+  call-release:
+    needs: prepare # Wait for the first job
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
+    with:
+      # Here you can pass inputs if needed
+      build_command: make build
+    secrets:
+      # The token is passed from the first job
+      RELEASE_TOKEN: ${{ needs.prepare.outputs.token }}

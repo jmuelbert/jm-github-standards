@@ -1,0 +1,77 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: 🏷️ Shared Label Sync
+
+on:
+  workflow_call:
+    secrets:
+      secret-token:
+        description: Secret token for GitHub API (e.g. GITHUB_TOKEN or PAT)
+        required: true
+
+jobs:
+  label-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
+      - name: 📥 Download Central Config
+        run: |
+          # We load the configuration directly from the Standards-Repo
+          # So the target repo does not need to check out the Standards-Repo at all
+          curl -sSL -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               -o labels.json \
+               "https://raw.githubusercontent.com/jmuelbert/jm-github-standards/main/.github/config/labels.json"
+
+      - name: 🏷️ Sync & Strict Prune
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 1. Verification
+          if ! jq . labels.json > /dev/null 2>&1; then
+            echo "❌ Error: labels.json is not valid JSON!"
+            exit 1
+          fi
+
+          # 2. Extract standard names
+          jq -r '.[].name' labels.json > standard_names.txt
+
+          # 3. PRUNING: Remove anything NOT in the JSON
+          echo "Starting strict pruning..."
+          gh label list --repo "${{ github.repository }}" --json name --jq '.[].name' | while read -r local_label; do
+
+            if grep -qx "$local_label" standard_names.txt; then
+              continue # Label is desired
+            fi
+
+            # Minimal protection for labels created by GitHub internal processes (optional)
+            if [[ "$local_label" =~ ^v[0-9] ]]; then
+              echo "🛡️ Skipping: Protected version tag label -> $local_label"
+              continue
+            fi
+
+            echo "🗑️ Pruning: Removing non-standard label -> $local_label"
+            gh label delete "$local_label" --repo "${{ github.repository }}" --yes || echo "⚠️ Warning: Could not delete $local_label"
+          done
+
+          # 4. SYNC: Apply central standards
+          echo "Applying central standards to ${{ github.repository }}..."
+          jq -c '.[]' labels.json | while read -r label; do
+            NAME=$(echo "$label" | jq -r '.name')
+            COLOR=$(echo "$label" | jq -r '.color')
+            DESC=$(echo "$label" | jq -r '.description // ""')
+
+            echo "Syncing label: $NAME"
+            gh label create "$NAME" \
+              --repo "${{ github.repository }}" \
+              --color "$COLOR" \
+              --description "$DESC" \
+              --force
+          done
+          echo "✅ Synchronization complete. Your repository is now standard-compliant."

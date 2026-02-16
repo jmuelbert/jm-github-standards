@@ -87,6 +87,19 @@ Since this project focuses on infrastructure-as-code and automation, please adhe
 
 ### ⚙️ GitHub Workflows
 
+### 📝 Language & Communication
+
+- **English Only:** To ensure global accessibility, all code comments, commit messages, and documentation must be in English.
+- **Workflow Prints:** All `echo` statements and log outputs in GitHub Actions must be in English.
+
+### 🔍 Linting & Quality
+
+- **YAML & Workflows:** We use `actionlint` and `yamllint`. Ensure no "Schema not found" errors persist unless explicitly
+  ignored.
+
+- **Local Checks:** Always run `task lint` before pushing. This executes our local quality suite including the
+  `Y8r Linter` logic.
+
 - **Modularity:** Use [Reusable Workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
   wherever possible to reduce duplication.
 
@@ -140,7 +153,7 @@ We strictly follow [Semantic Versioning 2.0.0](https://semver.org/). This is cru
 workflows and configurations.
 
 - **MAJOR (x.0.0):** Significant changes or breaking changes in workflows (for example, removing a required input or
-renaming a core task).
+  renaming a core task).
 
 - **MINOR (0.x.0):** New features or new reusable workflows added in a backward-compatible manner.
 

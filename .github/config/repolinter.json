@@ -1,0 +1,403 @@
+{
+  "$schema": "https://raw.githubusercontent.com/todogroup/repolinter/master/rulesets/schema.json",
+  "version": 2,
+  "axioms": {
+    "linguist": "language",
+    "licensee": "license",
+    "packagers": "packager"
+  },
+  "rules": {
+    "license-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["LICENSE*"],
+          "nocase": true
+        }
+      }
+    },
+    "readme-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["README*"],
+          "nocase": true
+        }
+      }
+    },
+    "discussion-ideas-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/DISCUSSION_TEMPLATE/ideas.yml"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "discussion-q-a-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/DISCUSSION_TEMPLATE/q-a.yml"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "ISSUES-bug-report-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/ISSUE_TEMPLATE/01-bug-report.yml"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "ISSUES-feature-request-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/ISSUE_TEMPLATE/02-feature-request.yml"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "ISSUES-documentation-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/ISSUE_TEMPLATE/03-documentation.yml"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "code-of-conduct-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/CODE_OF_CONDUCT*"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "contributing-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [".github/CONTRIBUTING*"],
+          "nocase": true
+        }
+      }
+    },
+    "contributors-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [
+            ".github/CONTRIBUTORS*"
+          ],
+          "nocase": true
+        }
+      }
+    },
+    "pull-request-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [".github/PULL_REQUEST_TEMPLATE.md"]
+        }
+      }
+    },
+    "security-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [".github/SECURITY.md"]
+        }
+      }
+    },
+    "support-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [".github/SUPPORT.md"],
+          "nocase": true
+        }
+      }
+    },
+    "changelog-file-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["CHANGELOG*"],
+          "nocase": true
+        }
+      }
+    },
+    "readme-references-license": {
+      "level": "error",
+      "rule": {
+        "type": "file-contents",
+        "options": {
+          "globsAll": ["README*"],
+          "content": "license",
+          "flags": "i"
+        }
+      }
+    },
+    "binaries-not-present": {
+      "level": "error",
+      "rule": {
+        "type": "file-type-exclusion",
+        "options": {
+          "type": ["**/*.exe", "**/*.dll", "!node_modules/**", "!dist/**", "!build/**", "!venv/**", "!.venv/**"]
+        }
+      }
+    },
+    "test-directory-exists": {
+      "level": "warning",
+      "rule": {
+        "type": "directory-existence",
+        "options": {
+          "globsAny": ["**/test*", "**/specs"],
+          "nocase": true
+        }
+      }
+    },
+    "integrates-with-github-actions": {
+          "level": "error",
+          "rule": {
+            "type": "file-existence",
+            "options": { "globsAny": [".github/workflows/*.yml"] }
+          }
+        },
+    "code-of-conduct-file-contains-email": {
+      "level": "error",
+      "rule": {
+        "type": "file-contents",
+        "options": {
+          "globsAll": ["{,.github/}CODE_OF_CONDUCT*"],
+          "content": ".+@.+\\..+",
+          "flags": "i",
+          "human-readable-content": "email address"
+        }
+      }
+    },
+    "github-pull-request-template-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "dirs": true,
+          "globsAny": [
+            "PULL_REQUEST_TEMPLATE*",
+            ".github/PULL_REQUEST_TEMPLATE*",
+            ".github/pull_request_template.md",
+            "docs/pull_request_template.md",
+            "docs/PULL_REQUEST_TEMPLATE*",
+            "pull_request_template.md"
+          ]
+        }
+      }
+    },
+    "javascript-package-metadata-exists": {
+      "level": "warning",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["package.json"]
+        }
+      }
+    },
+    "ruby-package-metadata-exists": {
+      "level": "warning",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["Gemfile"]
+        }
+      }
+    },
+    "java-package-metadata-exists": {
+      "level": "warning",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["pom.xml", "build.xml", "build.gradle"]
+        }
+      }
+    },
+    "python-package-metadata-exists": {
+      "level": "warning",
+
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["pyproject.toml", "setup.py", "requirements.txt"]
+        }
+      }
+    },
+    "github-dependabot": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": [".github/dependabot.yml"]
+        }
+      }
+    },
+    "check-gitleaks": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/.gitleaks.toml"] } }
+    },
+    "check-mega-linter": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/.mega-linter.yml"] } }
+    },
+    "check-shellcheck": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/.shellcheckrc"] } }
+    },
+    "check-vale": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".vale.ini"] } }
+    },
+    "check-dependency-review": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/dependency-review-config.yml"] } }
+    },
+    "check-issue-triage": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/issue-triage.json"] } }
+    },
+    "check-labeler": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/labeler.yml"] } }
+    },
+    "check-labels": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/labels.json"] } }
+    },
+    "check-editorconfig": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".editorconfig"] } }
+    },
+    "check-gitattributes": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".gitattributes"] } }
+    },
+    "check-gitignore": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".gitignore"] } }
+    },
+    "check-markdown-link-check": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".markdown-link-check.json"] } }
+    },
+    "check-markdownlint": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".markdownlint.json"] } }
+    },
+    "check-markdownignore": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".markdownlintignore"] } }
+    },
+    "check-prettierignore": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".prettierignore"] } }
+    },
+    "check-prettierrc": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".prettierrc.json"] } }
+    },
+    "check-taplo": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".taplo.toml"] } }
+    },
+    "check-yamllint": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".yamllint.yml"] } }
+    },
+    "check-commitlint": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["commitlint.config.js"] } }
+    },
+    "check-cspell": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["cspell.json"] } }
+    },
+    "check-megalinter-eslint": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": [".github/config/eslint.megalinter.config.js"] } }
+    },
+    "check-biome": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["biome.json"] } }
+    },
+    "check-lefthook": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["lefthook.yml"] } }
+    },
+    "check-mkdocs": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["mkdocs.yml"] } }
+    },
+    "check-reuse": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["REUSE.toml"] } }
+    },
+    "check-taskfile": {
+      "level": "error",
+      "rule": { "type": "file-existence", "options": { "files": ["Taskfile.yml"] } }
+    },
+    "check-src-dir": {
+      "level": "warning",
+      "rule": { "type": "directory-existence", "options": { "directories": ["src"] } }
+    },
+    "check-docs-dir": {
+      "level": "error",
+      "rule": { "type": "directory-existence", "options": { "directories": ["docs"] } }
+    },
+    "check-docs-en": {
+      "level": "error",
+      "rule": { "type": "directory-existence", "options": { "directories": ["docs/en"] } }
+    },
+    "check-docs-de": {
+      "level": "warning",
+      "rule": { "type": "directory-existence", "options": { "directories": ["docs/de"] } }
+    },
+    "check-docs-it": {
+      "level": "warning",
+      "rule": { "type": "directory-existence", "options": { "directories": ["docs/it"] } }
+    },
+    "check-docs-es": {
+      "level": "warning",
+      "rule": { "type": "directory-existence", "options": { "directories": ["docs/es"] } }
+    }
+  }
+}
