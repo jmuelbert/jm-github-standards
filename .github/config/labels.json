@@ -1,0 +1,28 @@
+[
+  { "name": "documentation", "color": "0075ca", "description": "Docs and guides" },
+  { "name": "source", "color": "1d76db", "description": "Source code changes" },
+  { "name": "test", "color": "207de5", "description": "Tests and test config" },
+  { "name": "dependencies", "color": "8732bc", "description": "Package and build updates" },
+  { "name": "feature", "color": "a2eeef", "description": "New features" },
+  { "name": "fix", "color": "d73a4a", "description": "Bug fixes" },
+  { "name": "ci", "color": "5319e7", "description": "CI/CD and GitHub config" },
+  { "name": "chore", "color": "ededed", "description": "Maintenance and tool configs" },
+  { "name": "release", "color": "f9d0c4", "description": "Release related changes" },
+
+  { "name": "production-dependency", "color": "0052cc", "description": "Direct production dependency update" },
+  { "name": "development-dependency", "color": "006b75", "description": "Development tool/dependency update" },
+  { "name": "patch-update", "color": "0e8a16", "description": "SemVer Patch update" },
+  { "name": "minor-update", "color": "fbca04", "description": "SemVer Minor update" },
+  { "name": "major-update", "color": "d93f0b", "description": "SemVer Major update (breaking)" },
+
+  { "name": "security", "color": "b60205", "description": "Security vulnerability fix" },
+  { "name": "security-review", "color": "d8000c", "description": "Manual security review required" },
+  { "name": "security-label", "color": "e99695", "description": "Security-related content detected" },
+
+  { "name": "performance-label", "color": "fef2c0", "description": "Performance optimizations" },
+  { "name": "breaking-label", "color": "d93f0b", "description": "Breaking changes detected in body" },
+  { "name": "merge-conflict", "color": "444444", "description": "PR has merge conflicts" },
+
+  { "name": "status: work-in-progress", "color": "f9d0c4", "description": "PR is still being worked on" },
+  { "name": "status: ready-for-review", "color": "c2e0c6", "description": "PR is ready for human eyes" }
+]
