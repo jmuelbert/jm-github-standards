@@ -11,6 +11,11 @@ on:
     - cron: 0 0 * * 1 # Every Monday at 4 am
   workflow_dispatch: # Allow manual start
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   maintenance:
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-maintenance.yml@main
