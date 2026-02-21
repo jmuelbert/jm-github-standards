@@ -26,9 +26,9 @@ jobs:
         id: get-version
         run: |
           # Extract version
-          VERSION="$(grep 'next-milestone:' .github/branch-name-patterns.yml | awk '{print $2}' | tr -d '"')"
+          VERSION="$(grep 'next_release:' .github/repo-metadata.yml | awk '{print $2}' | tr -d '"')"
           # Pre-release: Extract status (true/false)
-          PRERELEASE="$(grep 'is-prerelease:' .github/branch-name-patterns.yml | awk '{print $2}')"
+          PRERELEASE="$(grep 'is-prerelease:' .github/repo-metadata.yml | awk '{print $2}')"
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
