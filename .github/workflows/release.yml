@@ -26,12 +26,18 @@ jobs:
         id: get-version
         run: |
           # Extract version
-          VERSION="$(grep 'next_release:' .github/repo-metadata.yml | awk '{print $2}' | tr -d '"')"
-          # Pre-release: Extract status (true/false)
-          PRERELEASE="$(grep 'is-prerelease:' .github/repo-metadata.yml | awk '{print $2}')"
+          META_FILE=".github/repo-metadata.yml"
 
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          if [ -f "$META_FILE" ]; then
+            VERSION=$(grep "next_release:" "$META_FILE" | awk '{print $2}' | tr -d '"' | tr -d "'")
+            PRERELEASE=$(grep "is-prerelease:" "$META_FILE" | awk '{print $2}')
+
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+            echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Metadata file not found at $META_FILE"
+            exit 1
+          fi
 
   # Job 2: Call Shared Workflow
   call-release:
@@ -42,8 +48,7 @@ jobs:
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
     with:
       profile: generic
-      # Here you can pass inputs if needed
-      # build_command: make build
+      # version: ${{ needs.prepare.outputs.next_version }}
     secrets:
       # The token is passed from the first job
       RELEASE_TOKEN: ${{ needs.prepare.outputs.token }}
