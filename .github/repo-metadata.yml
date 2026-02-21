@@ -1,0 +1,12 @@
+---
+# .github/branch-name-patterns.yml
+# Konfiguration für Repository-Metadaten
+# Version: 0.1.0-alpha
+
+settings:
+  assign_milestone: true
+
+milestones:
+  # Ziel-Meilenstein für alle neuen PRs
+  next_release: 0.2.0
+  is-prerelease: true
