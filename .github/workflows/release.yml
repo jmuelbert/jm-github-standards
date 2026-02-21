@@ -36,6 +36,9 @@ jobs:
   # Job 2: Call Shared Workflow
   call-release:
     needs: prepare # Wait for the first job
+    permissions:
+      contents: write
+      id-token: write
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
     with:
       profile: generic
