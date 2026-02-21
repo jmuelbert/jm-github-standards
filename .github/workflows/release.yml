@@ -38,6 +38,7 @@ jobs:
     needs: prepare # Wait for the first job
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
     with:
+      profile: generic
       # Here you can pass inputs if needed
       build_command: make build
     secrets:
