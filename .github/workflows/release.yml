@@ -40,7 +40,7 @@ jobs:
     with:
       profile: generic
       # Here you can pass inputs if needed
-      build_command: make build
+      # build_command: make build
     secrets:
       # The token is passed from the first job
       RELEASE_TOKEN: ${{ needs.prepare.outputs.token }}
