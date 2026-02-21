@@ -37,9 +37,8 @@ jobs:
           META_FILE=".github/repo-metadata.yml"
 
           if [ -f "$META_FILE" ]; then
-            VERSION="$(grep 'next_release:'" "$META_FILE" | awk '{print $2}' | tr -d '"')"
-            # Pre-release: Extract status (true/false)
-            PRERELEASE="$(grep 'is-prerelease:' "$META_FILE" | awk '{print $2}')"
+            VERSION=$(grep "next_release:" "$META_FILE" | awk '{print $2}' | tr -d '"' | tr -d "'")
+            PRERELEASE=$(grep "is-prerelease:" "$META_FILE" | awk '{print $2}')
 
             echo "version=$VERSION" >> "$GITHUB_OUTPUT"
             echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
@@ -57,10 +56,7 @@ jobs:
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
     with:
       profile: generic
-      token: ${{ needs.prepare.outputs.token }}
-      # Here you can pass inputs if needed
       # version: ${{ needs.prepare.outputs.next_version }}
-      # build_command: make build
     secrets:
       # The token is passed from the first job
       RELEASE_TOKEN: ${{ needs.prepare.outputs.token }}
