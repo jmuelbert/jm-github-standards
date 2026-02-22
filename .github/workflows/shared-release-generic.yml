@@ -51,17 +51,24 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.generate-token.outputs.token }}
 
+      - name: 📝 Prepare Release Config
+        run: |
+          if [ -f ".github/config/base.releaserc.json" ]; then
+            cp .github/config/base.releaserc.json .releaserc.json
+            echo "✅ Config copied to root"
+          else
+            echo "::error::Release config not found!"
+            exit 1
+          fi
+
       - name: Semantic Release
         id: semantic
         uses: cycjimmy/semantic-release-action@f80bc733841d90bfa72e388034af6153a9c4e4cc # v6.0.0
         with:
-          prerelease: ${{ inputs.is_prerelease }}
-          extends: |
-            ./.github/config/base.releaserc.json
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
-            ${{ inputs.profile == 'node' && '@semantic-release/npm' || '' }}
+            conventional-changelog-conventionalcommits
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
