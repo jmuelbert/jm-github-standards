@@ -1,8 +1,8 @@
 ---
 # SPDX-License-Identifier: EUPL-1.2
-# SPDX-FileCopyrightText: 2025-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
 
-name: Reusable Release
+name: Shared Generic Reusable Release
 
 # yamllint disable-line rule:truthy
 on:
@@ -12,12 +12,18 @@ on:
         required: true
         type: string
         description: Language profile (e.g. node, python, generic)
+      is_prerelease:
+        type: boolean
+        default: false
+        description: "Is this a pre-release?"
       doc_command:
         type: string
         default: ""
         description: Command to deploy documentation
     secrets:
-      RELEASE_TOKEN:
+      RELEASE_APP_ID:
+        required: true
+      RELEASE_APP_PRIVATE_KEY:
         required: true
 
 jobs:
@@ -32,16 +38,24 @@ jobs:
         with:
           egress-policy: audit
 
+      - name: 🔑 Generate Token
+        id: generate-token
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.1.1
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
       - name: 🧰 Checkout Repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_TOKEN }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Semantic Release
         id: semantic
         uses: cycjimmy/semantic-release-action@f80bc733841d90bfa72e388034af6153a9c4e4cc # v6.0.0
         with:
+          prerelease: ${{ inputs.is_prerelease }}
           extends: |
             ./.github/config/base.releaserc.json
           extra_plugins: |
@@ -49,7 +63,7 @@ jobs:
             @semantic-release/git
             ${{ inputs.profile == 'node' && '@semantic-release/npm' || '' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
       - name: 🔧 Install Astral uv
         uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
@@ -60,10 +74,21 @@ jobs:
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
           if [ -f "mkdocs.yml" ]; then
+            if [ "${{ inputs.is_prerelease }}" = "true" ]; then
+              ALIAS="preview"
+              MIKE_OPTS=""
+            else
+              ALIAS="latest"
+              MIKE_OPTS="--set-default"
+            fi
+
+            echo "🚀 Deploying version ${{ steps.semantic.outputs.new_release_version }} as $ALIAS"
+
             uv run --with mkdocs-material --with mike \
-              mike deploy --push --update-aliases ${{ steps.semantic.outputs.new_release_version }} latest
+              mike deploy --push --update-aliases $MIKE_OPTS \
+              "${{ steps.semantic.outputs.new_release_version }}" "$ALIAS"
           fi
 
       - name: 📚 Deploy Specific Documentation
         if: steps.semantic.outputs.new_release_published == 'true' && inputs.doc_command != ''
-        run: ${{ inputs.doc_command != '' }}
+        run: ${{ inputs.doc_command }}
