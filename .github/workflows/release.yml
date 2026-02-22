@@ -11,7 +11,6 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      token: ${{ steps.generate-token.outputs.token }}
       next_version: ${{ steps.get-version.outputs.version }}
       is_prerelease: ${{ steps.get-version.outputs.prerelease }}
     steps:
@@ -22,13 +21,6 @@ jobs:
 
       - name: 🧰 Checkout Repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: 🔑 Generate Token
-        id: generate-token
-        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.1.1
-        with:
-          app-id: ${{ secrets.RELEASE_APP_ID }}
-          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
       - name: 🏷️ Get Config from YAML
         id: get-version
@@ -56,7 +48,8 @@ jobs:
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-generic.yml@main
     with:
       profile: generic
-      # version: ${{ needs.prepare.outputs.next_version }}
+      is_prerelease: ${{ needs.prepare.outputs.is_prerelease == 'true' }}
     secrets:
-      # The token is passed from the first job
-      RELEASE_TOKEN: ${{ needs.prepare.outputs.token }}
+      # Get the basic data to the shared workflow
+      RELEASE_APP_ID: ${{ secrets.RELEASE_APP_ID }}
+      RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}

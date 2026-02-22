@@ -1,4 +1,5 @@
 [
+	{ "name": "bug", "color": "d73a4a", "description": "Indicates an unexpected problem or unintended behavior"},
   { "name": "documentation", "color": "0075ca", "description": "Docs and guides" },
   { "name": "source", "color": "1d76db", "description": "Source code changes" },
   { "name": "test", "color": "207de5", "description": "Tests and test config" },
