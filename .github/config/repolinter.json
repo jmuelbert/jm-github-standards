@@ -262,6 +262,15 @@
         }
       }
     },
+    "python-pyproject-toml-exists": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["pyproject.toml"]
+        }
+      }
+    },
     "github-dependabot": {
       "level": "error",
       "rule": {
@@ -302,6 +311,13 @@
     "check-labels": {
       "level": "error",
       "rule": { "type": "file-existence", "options": { "files": [".github/config/labels.json"] } }
+    },
+    "check-repo-metadata": {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": { "files": [".github/repo-metadata.yml"] }
+      }
     },
     "check-editorconfig": {
       "level": "error",
