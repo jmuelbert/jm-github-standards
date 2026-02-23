@@ -60,6 +60,7 @@ jobs:
           # Using the centralized config for all repositories
           config_url: https://raw.githubusercontent.com/jmuelbert/jm-github-standards/main/.github/config/repolinter.json
           output_type: issue
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   maintenance:
     name: Cleanup & Welcome
