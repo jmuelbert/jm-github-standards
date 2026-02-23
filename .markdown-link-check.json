@@ -1,0 +1,29 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^http://localhost"
+    },
+    { "pattern": "^https://www.linkedin.com/.*" },
+    { "pattern": "https://img.shields.io/.*" }
+  ],
+  "httpHeaders": [
+      {
+        "urls": ["https://github.com/"],
+        "headers": {
+          "Accept": "text/html",
+          "User-Agent": "Mozilla/5.0 (compatible; LinkChecker/1.0)"
+        }
+      }
+    ],
+  "replacementPatterns": [
+    {
+      "pattern": "^/",
+      "replacement": "{{BASEURL}}/"
+    }
+  ],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 3,
+  "fallbackRetryDelay": "30s",
+  "aliveStatusCodes": [200, 206]
+}

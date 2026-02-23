@@ -1,0 +1,50 @@
+
+title = "gitleaks config"
+
+[extend]
+# useDefault will extend the base configuration with the default gitleaks config:
+# https://github.com/zricethezav/gitleaks/blob/master/config/gitleaks.toml
+useDefault = true
+
+[[rules]]
+description = "Stop-Gap: Verhindert das Einchecken von internen Projekt-IDs oder spezifischen Keywords"
+id          = "internal-project-keyword"
+regex       = '''(?i)(PROJEKT_ALPHA_SECRET|INTERNER_SERVER_NAME|GEHEIMES_TEST_PASSWORT)'''
+severity    = "error"
+
+[[rules]]
+description = "Stop-Gap: Verhindert das Einchecken von internen Projekt-IDs oder spezifischen Keywords"
+id          = "internal-project-keyword"
+regex       = '''(?i)(PROJEKT_ALPHA_SECRET|INTERNER_SERVER_NAME|GEHEIMES_TEST_PASSWORT)\s*[:=]\s*['"].*['"]'''
+severity    = "error"
+
+[allowlist]
+description = "Global exceptions for tools and binary files"
+paths = [
+  # Infrastructure and git (extremely important for performance)
+  '''\.tox/.*''',
+  '''\.venv/.*''',
+  '''venv/.*''',
+  '''\.git/.*''',
+
+  # Tooling and caching
+  '''megalinter-reports/.*''',
+  '''\.github/linters/.*''',
+  '''node_modules/.*''',
+  '''\.mypy_cache/.*''',
+  '''\.pytest_cache/.*''',
+  '''__pycache__/.*''',
+
+  # Specific files
+  '''(.*?)gitleaks\.toml$''',
+  '''(go.mod|go.sum)$''',
+
+  # Binary and media formats (regex optimized)
+  '''(?i)(.*?)(png|jpeg|jpg|gif|doc|docx|pdf|bin|xls|xlsx|pyc|zip)$''',
+
+
+  '''\.venv/.*''',
+  '''\.git/.*''',
+
+  '''\.tox/.*''',
+]

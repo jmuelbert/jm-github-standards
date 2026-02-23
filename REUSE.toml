@@ -1,0 +1,77 @@
+# SPDX-FileCopyrightText: 2025 Jürgen Mülbert <juergen.muelbert@gmail.com>
+# SPDX-License-Identifier: EUPL-1.2
+
+version = 1
+
+# ---------------------------------------------------------
+# STEP 1: Global Defaults (Lowest Precedence)
+# ---------------------------------------------------------
+[[annotations]]
+SPDX-FileCopyrightText  = "2025 Jürgen Mülbert <juergen.muelbert@gmail.com>"
+SPDX-License-Identifier = "EUPL-1.2"
+path                    = "**"
+
+# ---------------------------------------------------------
+# STEP 2: General GitHub & Logic (EUPL-1.2)
+# ---------------------------------------------------------
+[[annotations]]
+SPDX-FileCopyrightText  = "2025 Jürgen Mülbert <juergen.muelbert@gmail.com>"
+SPDX-License-Identifier = "EUPL-1.2"
+path                    = [".github/**"]
+precedence              = "aggregate"
+
+# ---------------------------------------------------------
+# STEP 3: Documentation & Community (CC-BY-4.0)
+# ---------------------------------------------------------
+[[annotations]]
+SPDX-FileCopyrightText = "2026 Jürgen Mülbert <juergen.muelbert@gmail.com>"
+SPDX-License-Identifier = "CC-BY-4.0"
+path = [
+  "docs/**",
+  "**.png",
+  "**.jpg",
+  "**.svg",
+  "**.ico",
+  "README.md",
+  "CHANGELOG.md",
+  ".github/*.md",                   # Alle .md Files direkt in .github (CONTRIBUTING etc.)
+  ".github/ISSUE_TEMPLATE/**",
+  ".github/DISCUSSION_TEMPLATE/**",
+]
+precedence = "override"
+
+# ---------------------------------------------------------
+# STEP 4: Trivial Configurations (CC0-1.0)
+# ---------------------------------------------------------
+[[annotations]]
+SPDX-FileCopyrightText = "2025 Jürgen Mülbert <juergen.muelbert@gmail.com>"
+SPDX-License-Identifier = "CC0-1.0"
+path = [
+  "**/.gitignore",
+  "**/.gitattributes",
+  "**/.editorconfig",
+  "**/*.json",
+  "**/*.toml",
+  "**/*.yml",
+  "**/.markdownlint*",
+  "**/.prettier*",
+  "**/.vale.ini",
+  "lefthook.yml",
+  "Taskfile.yml",
+]
+# Wir nehmen hier die Vale-Styles NICHT rein, da sie eine echte Lizenz (MIT) haben
+precedence = "override"
+
+# ---------------------------------------------------------
+# STEP 5: Third-Party Content (Highest Precedence)
+# ---------------------------------------------------------
+# Diese Regel steht ganz unten, damit sie ALLES oben drüber für diese Pfade überschreibt.
+[[annotations]]
+SPDX-FileCopyrightText = "Microsoft Corporation, proselint contributors, errata-ai"
+SPDX-License-Identifier = "MIT"
+path = [
+  ".github/config/styles/Microsoft/**",
+  ".github/config/styles/Readability/**",
+  ".github/config/styles/proselint/**",
+]
+precedence = "override"

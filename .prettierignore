@@ -1,0 +1,28 @@
+---
+# Prettier configuration file for ignoring paths.
+#
+# For more information, visit https://prettier.io/docs/en/ignore.html.
+
+.github/config/styles/**
+LICENSE
+LICENSES/**
+benchmark/
+dist/
+build/
+site/
+
+**/*.pyc
+**/.*egg-info
+cspell.config.yaml
+pnpm-lock.yaml
+*.lock
+
+# Ignore files handled by Biome
+**/*.js
+**/*.jsx
+**/*.ts
+**/*.tsx
+**/*.html
+**/*.css
+**/*.json
+**/*.jsonc
