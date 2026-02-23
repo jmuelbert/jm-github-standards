@@ -2,6 +2,12 @@
 
 Alle relevanten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [0.1.3](https://github.com/jmuelbert/jm-github-standards/compare/v0.1.2...v0.1.3) (2026-02-23)
+
+### Bug Fixes
+
+* **ci:** enable manual trigger for maintenance workflow ([#27](https://github.com/jmuelbert/jm-github-standards/issues/27)) ([fe0d217](https://github.com/jmuelbert/jm-github-standards/commit/fe0d217e960fb2fc314267974913082bc7171f3c))
+
 ## [0.1.2](https://github.com/jmuelbert/jm-github-standards/compare/v0.1.1...v0.1.2) (2026-02-23)
 
 ### Bug Fixes
