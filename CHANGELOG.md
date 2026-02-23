@@ -2,6 +2,12 @@
 
 Alle relevanten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 
+## [0.1.4](https://github.com/jmuelbert/jm-github-standards/compare/v0.1.3...v0.1.4) (2026-02-23)
+
+### Bug Fixes
+
+* **ci:** shared-maintenace path issue [#28](https://github.com/jmuelbert/jm-github-standards/issues/28) ([#29](https://github.com/jmuelbert/jm-github-standards/issues/29)) ([659d710](https://github.com/jmuelbert/jm-github-standards/commit/659d7107359bcf25e623fdc02e949f875c33841c))
+
 ## [0.1.3](https://github.com/jmuelbert/jm-github-standards/compare/v0.1.2...v0.1.3) (2026-02-23)
 
 ### Bug Fixes
