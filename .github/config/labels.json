@@ -25,5 +25,7 @@
   { "name": "merge-conflict", "color": "444444", "description": "PR has merge conflicts" },
 
   { "name": "status: work-in-progress", "color": "f9d0c4", "description": "PR is still being worked on" },
-  { "name": "status: ready-for-review", "color": "c2e0c6", "description": "PR is ready for human eyes" }
+  { "name": "status: ready-for-review", "color": "c2e0c6", "description": "PR is ready for human eyes" },
+
+  { "name": "repolinter", "color": "fbca04", "description": "Issues created by the Repolinter action" }
 ]
