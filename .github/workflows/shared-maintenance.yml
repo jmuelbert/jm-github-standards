@@ -58,7 +58,7 @@ jobs:
         with:
           # Using the centralized config for all repositories
           config_url: https://raw.githubusercontent.com/jmuelbert/github-standards/main/.github/config/repolinter.json
-          output_type: markdown
+          output_type: issue
 
   maintenance:
     name: Cleanup & Welcome
