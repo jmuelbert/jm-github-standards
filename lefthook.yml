@@ -1,0 +1,48 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: Jürgen Mülbert <juergen.muelbert@gmail.com>
+#
+pre-commit:
+  parallel: true
+  commands:
+    # 1. License Compliance (Crucial for OS projects)
+    reuse:
+      run: uv run reuse lint
+
+    # 2. Spelling (Optimized to skip 'site' and 'venv' via glob)
+    spell-check:
+      glob: "*.{md,py,cpp,h,rs,ts,js,json,txt}"
+      exclude: (site|venv|.venv|node_modules|.github/config/styles)/
+      run: pnpm run lint:spell
+
+    # 3. Frontend / Web (The core of your current project)
+    # We use {staged_files} to lint ONLY what you changed.
+    # This is much faster than linting the whole project every time.
+    lint-js:
+      glob: "*.{js,jsx,ts,tsx}"
+      run: pnpm exec eslint {staged_files}
+
+    # 4. Configs (Since you use TOML/YAML for standards)
+    lint-configs:
+      glob: "*.{yaml,yml}"
+      run: uv run yamllint -c .yamllint.yml .
+
+    # 5. Configs (Since you use TOML for standards)
+    lint-toml:
+      glob: "*.toml"
+      run: uv run taplo lint
+
+    # 5. Documentation
+    lint-docs:
+      glob: "*.{md,markdown,mdx,adoc,asciidoc}"
+      run: pnpm run lint:docs
+
+    # 6. Repolinter (Checks project structure/README etc.)x
+    lint-repolinter:
+      run: pnpm run lint:repolinter
+
+# Added: Commitlint integration
+commit-msg:
+  commands:
+    lint commit message:
+      run: pnpm exec commitlint --edit {1}

@@ -1,0 +1,75 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2025-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+# ----------------------------------------------------------------------
+# Build System (PEP 517/621) - Obligatorisch für pyproject.toml
+# ----------------------------------------------------------------------
+[build-system]
+build-backend = "uv_build"
+requires      = ["uv_build>=0.9.8,<0.10.0"]
+
+# ----------------------------------------------------------------------
+# Project Metadata (PEP 621)
+# ----------------------------------------------------------------------
+[project]
+description     = "Central nervous system of our repository infrastructure."
+license         = "EUPL-1.2"
+name            = "jm-github-standards"
+readme          = "README.md"
+requires-python = ">=3.12"
+version         = "0.1.0"
+
+# This project has no runtime dependencies
+dependencies = []
+
+# ----------------------------------------------------------------------
+# Optional Dependencies for Development/Documentation (PEP 621 Standard)
+# ----------------------------------------------------------------------
+[project.optional-dependencies]
+dev = [
+  "mike>=2.1.3",
+  "mkdocs>=1.6.1",
+  "mkdocs-awesome-pages-plugin>=2.10.1",
+  "mkdocs-git-revision-date-localized-plugin>=1.5.0",
+  "mkdocs-glightbox>=0.5.2",
+  "mkdocs-include-markdown-plugin>=7.2.0",
+  "mkdocs-material[imaging]>=9.6.23",
+  "mkdocs-section-index>=0.3.10",
+  "mkdocs-static-i18n>=1.3.0",
+  "mkdocs-typer2>=0.1.6",
+  "mkdocstrings-shell>=1.0.4",
+  "mkdocstrings[python]>=0.30.1",
+  "mkdocs-linkcheck>=1.0.6",
+  "reuse>=6.2.0",
+  "shellman>=1.0.2",
+  "yamllint>=1.37.1",
+  "linkcheckmd>=1.4.0",
+  "taplo>=0.9.3",
+  "vale>=3.13.0.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["test/test"]
+
+[tool.pyright]
+exclude          = ["**/node_modules", "**/__pycache__"]
+include          = ["src", "tests"]
+pythonPlatform   = "Linux"
+pythonVersion    = "3.11"
+typeCheckingMode = "standard"                            # Alternativen: "off", "basic", "strict"
+
+# Hilft MegaLinter & IDEs, installierte Bibliotheken zu finden
+executionEnvironments = [{ root = "src" }]
+
+# Einzelne Regeln gezielt anpassen
+reportMissingImports   = true
+reportMissingTypeStubs = false # Verhindert Fehler bei Bibliotheken ohne Typen
+
+[tool.ruff]
+ignore         = ["E501", "W503"]
+line-length    = 88
+select         = ["E", "F", "W"]
+target-version = "py311"

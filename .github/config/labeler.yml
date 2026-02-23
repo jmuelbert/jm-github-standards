@@ -1,0 +1,145 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+# Add 'root' label to any root file changes
+# Quotation marks are required for the leading asterisk
+
+# 1. Documentation (Universal)
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+          - guides/**
+          - README.md
+          - AUTHORS.md
+          - CHANGELOG.md
+          - CODE_OF_CONDUCT.md
+          - CONTRIBUTING.md
+          - SECURITY.md
+          - .github/PULL_REQUEST_TEMPLATE.md
+          - "**/*.md"
+          - "**/*.mdx"
+          - "**/*.markdown"
+          - "**/*.asciidoc"
+          - "**/*.adoc"
+          - "**/*.rst"
+          - "**/*.txt"
+          - mkdocs.yml
+          - .vale.ini
+
+# 2. Source Code (Language specific combined)
+source:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/** # Python, Rust, C++ Standard
+          - include/** # C, C++ Header
+          - lib/** # Libraries
+          - "**/*.py" # Python
+          - "**/*.rs" # Rust
+          - "**/*.c" # C
+          - "**/*.cpp" # C++
+          - "**/*.h" # C Header
+          - "**/*.hpp" # C++ Header
+          - "**/*.js" # JavaScript
+          - "**/*.ts" # TypeScript
+          - "**/*.sh" # Shell Script
+          - "**/*.ps1" # PowerShell Script
+      - all-globs-to-all-files: "!src/docs/*"
+
+# 3. Test (Universal)
+test:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/tests/**"
+          - "**/test/**"
+          - "**/*_test.py"
+          - "**/*_test.rs"
+          - "**/tests/*.cpp"
+          - "**/tests/*.c"
+          - "**/tests/*.h"
+          - "**/tests/*.hpp"
+          - "**/tests/*.js"
+          - "**/tests/*.ts"
+          - "**/tests/*.sh"
+          - "**/tests/*.ps1"
+          - conftest.py
+
+# 4. Dependencies & Package Management
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/dependabot.yml
+          - pyproject.toml # Python
+          - poetry.lock # Python
+          - uv.lock # Python
+          - requirements.txt # Python
+          - Cargo.toml # Rust
+          - Cargo.lock # Rust
+          - conanfile.py # C++ (Conan)
+          - conanfile.txt # C++ (Conan)
+          - "**/CMakeLists.txt" # C++ (Build System)
+          - "**/*.cmake" # C++ (Build System)
+          - vcpkg.json # C++ (Package Manager)
+          - Makefile # C (Build System)
+          - package.json # JavaScript (Web/Nade)
+          - pnpm-lock.yaml # JavaScript (Package Manager)
+          - yarn.lock # JavaScript (Package Manager)
+          - package-lock.json # JavaScript (Package Manager)
+
+# 5. Continuous Integration & Deployment
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/workflows/**
+          - .github/actions/**
+          - .github/dependabot.yml
+          - .github/badges/**
+          - .github/config/**
+          - "!.github/config/styles/**"
+          - .github/scripts/**
+          - .github/invite-contributors.yml
+
+chore:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .editorconfig
+          - .gitattributes
+          - .gitignore
+          - .markdown-link-check.json
+          - .markdownlint.json
+          - .markdownlintignore
+          - .mega-linter.yml
+          - .prettierignore
+          - .prettierrc.json
+          - .taplo.toml
+          - .yamllint
+          - commitlint.config.js
+          - cspell.json
+          - eslint.config.js
+          - lefthook.yml
+          - Taskfile.yml
+          - .yamllint
+          - LICENSE*
+          - LICENSES/**
+          - REUSE.toml
+          - CODE_OF_CONDUCT.md
+          - SECURITY.md
+          -
+feature:
+  - head-branch: [^feat, feature]
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/feat/**"
+          - "**/feature/**"
+
+fix:
+  - head-branch: [^fix, hotfix, bugfix]
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/fix/**"
+          - "**/hotfix/**"
+          - "**/bugfix/**"
+
+release:
+  - base-branch: main

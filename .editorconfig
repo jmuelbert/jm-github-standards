@@ -1,0 +1,46 @@
+# top-most EditorConfig file
+root = true
+
+# The default section sets rules that apply to all files
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+charset = utf-8
+max_line_length = 120
+
+# JavaScript, TypeScript and Web technologies
+# Note: Many teams prefer tabs for accessibility, or spaces for consistency.
+# Keep tabs if your Prettier config is set to "useTabs: true".
+[*.{js,jsx,ts,tsx,json,jsonc,css,html,graphql}]
+indent_style = tab
+indent_size = 2
+
+# Documentation and Data formats (Managed by Prettier/Vale)
+[*.{md,markdown,mdx,adoc,asciidoc,yaml,yml}]
+indent_style = space
+indent_size = 2
+max_line_length = 120
+
+# Python (Managed by Ruff)
+[*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 88
+
+# Rust (Managed by rustfmt)
+[*.rs]
+indent_style = space
+indent_size = 4
+
+# C++ and C (Based on 'our-c-style' in .gitattributes)
+[*.{c,cpp,h,hpp,cc,hh}]
+indent_style = tab
+indent_size = 4
+
+# Shell scripts
+[*.{sh,bash}]
+indent_style = space
+indent_size = 2

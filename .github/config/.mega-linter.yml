@@ -1,0 +1,172 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: Jürgen Mülbert <juergen.muelbert@gmail.com>
+#
+# .mega-linter.yml
+# Optimized for C++, Python, Rust, PowerShell, Shell, Documentation, and Security.
+
+# --- Core Settings ---
+# If you want to validate all codebase, set this to true.
+VALIDATE_ALL_CODEBASE: false
+
+# --- Enable/Disable Strategy ---
+# We use ENABLE_LINTERS for max speed and security.
+# Remove the large 'DISABLE' block as it is now redundant.
+
+# --- Linter Selection ---
+ENABLE_LINTERS:
+  # 1. Languages
+  # - BASH_EXEC # Basic shell script syntax check
+  # - BASH_SHELLCHECK # Advanced Shell script linter (your core need)
+  # - BASH_SHFMT # Shell script formatter (shfmt)
+  # - CPP_CPPCHECK # C++ linter (cppcheck)
+  # - CPP_CPPLINT # C++ linter (cpplint)
+  # - CPP_CLANG_FORMAT # C++ linter (clang-format)
+  - JAVASCRIPT_ES # JavaScript linter (ESLint)
+  - JAVASCRIPT_PRETTIER # JavaScript formatter (prettier)
+  # - POWERSHELL_POWERSHELL # PowerShell linter (PSScriptAnalyzer)
+  # - POWERSHELL_POWERSHELL_FORMATTER # PowerShell formatter (PSScriptAnalyzer)
+  # - PYTHON_PYRIGHT # Python linter (pyright)
+  # - PYTHON_RUFF # Python linter (ruff)
+  # - RUST_CLIPPY # Rust linter (clippy)
+
+  # 2. Formats
+  - JSON_JSONLINT # General JSON files
+  - JSON_V8R # JSON schema validation
+  - JSON_PRETTIER # JSON formatter (prettier)
+  - JSON_NPM_PACKAGE_JSON_LINT # Specific checks for package.json integrity (Keep this since you use pnpm)
+  - MARKDOWN_MARKDOWNLINT # Markdown file structure and style
+  - MARKDOWN_MARKDOWN_TABLE_FORMATTER # Markdown table formatter (markdown-table-formatter)
+  - XML_XMLLINT # XML linter (xmllint)
+  - YAML_PRETTIER # YAML formatter (prettier)
+  - YAML_YAMLLINT # General YAML config files (CI, mkdocs, etc.)
+  - YAML_V8R # YAML schema validation
+
+  # 3. Tooling formats
+  - ACTION_ACTIONLINT # GitHub Actions workflow files (.github/workflows/*.yml)
+  - DOCKERFILE_HADOLINT # Dockerfile linter (hadolint)
+  - TERRAFORM_TFLINT # Terraform linter (terraform)
+  - TERRAFORM_TERRAFORM_FMT # Terraform formatter (terraform)
+
+  # 4. Other
+  - REPOSITORY_GIT_DIFF # Checks for changes in the repository
+  - REPOSITORY_GITLEAKS # Secrets scanning in Git history
+  - REPOSITORY_KICS # Falls du mal Infrastructure as Code (Docker/Terraform) nutzt
+  - REPOSITORY_LS_LINT # fast file and directory name linter that helps maintain consistent naming conventions across your project.
+  - REPOSITORY_SEMGREP # Static code analysis for security vulnerabilities and coding standards
+  - REPOSITORY_TRIVY # Scans dependencies and configurations for known vulnerabilities
+
+  # 4.1 Spell
+  - SPELL_CSPELL # Spelling check (Crucial)
+  - SPELL_VALE # Documentation style and grammar check
+
+DISABLE_ERRORS_LINTERS:
+  - SPELL_CSPELL # Writing issues should not stop the build most of the time
+  - SPELL_VALE
+
+# --- Configuration Arguments ---
+
+# --- Exclusion List (To avoid running on third-party folders) ---
+EXCLUDED_DIRECTORIES:
+  - node_modules
+  - .venv
+  - venv
+  - dist
+  - .git
+  - megalinter-reports
+  - .my_cache
+  - target
+  - build
+  - .pytest_cache
+  - .cspellcache
+
+# Excludes
+JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
+YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (docs/|\.github/styles/)
+YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (\.github/config|mkdocs.yml|pnpm-lock.yaml)
+YAML_V8R_FILTER_REGEX_EXCLUDE: (|\.github/branch-name-patterns.yml)
+
+# Configs
+JAVASCRIPT_ES_CONFIG_FILE: .github/configs/eslint.megalinter.config.js
+JAVASCRIPT_ES_ARGUMENTS: --max-warnings=0
+
+MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
+MARKDOWN_FILTER_REGEX_EXCLUDE: (license\.md|docs/licenses|LICENSE|LICENSES)
+
+# Tell MegaLinter where to find the Vale config file
+SPELL_VALE_ARGUMENTS: --config=.github/config/.vale.ini
+SPELL_VALE_FILE_EXTENSIONS:
+  - .md
+  - .mdx
+  - .adoc
+  - .asciidoc
+  - .txt
+SPELL_VALE_FILTER_REGEX_EXCLUDE: (\.github|docs/de|docs/generated|site|LICENSE|LICENSES|CODE_OF_CONDUCT\.md|CHANGELOG\.md)
+SPELL_FILTER_REGEX_EXCLUDE: (\.github|docs/licenses|LICENSE|LICENSES)
+
+# Configurations
+#
+DOCKERFILE_HADOLINT_ARGUMENTS:
+  - --ignore DL3003
+  - --ignore DL3007
+  - --ignore DL3013
+  - --ignore DL3016
+  - --ignore DL3018
+  - --ignore DL3028
+  - --ignore DL3059
+  - --ignore DL4001
+  - --ignore DL4006
+  - --ignore SC2015
+  - --ignore SC2016
+  - --ignore SC2039
+  - --ignore SC2086
+  - --ignore SC1091
+  - --ignore SC3046
+REPOSITORY_TRIVY_ARGUMENTS:
+  - --skip-dirs
+  - .automation/test
+  - --skip-dirs
+  - .venv
+  - --skip-dirs
+  - node_modules
+  - --skip-dirs
+  - megalinter-reports
+
+RUST_CLIPPY_ARGUMENTS: [--, -D, warnings]
+
+# Powershell Analyzer JSON_PRETTIER_COMMAND_REMOVE_ARGUMENTS:
+POWERSHELL_POWERSHELL_ARGUMENTS:
+  - -ExcludeRule
+  - PSUseBOMForUnicodeEncodedFile
+POWERSHELL_POWERSHELL_DISABLE_ERRORS: true
+
+# Arguments for linters that need specific settings
+PYTHON_RUFF_CONFIG_FILE: pyproject.toml
+PYTHON_PYRIGHT_CONFIG_FILE: pyproject.toml
+PYTHON_DEFAULT_STYLE: ruff
+
+REPOSITORY_GITLEAKS_ARGUMENTS: --no-git
+REPOSITORY_GITLEAKS_CONFIG_FILE: .github/config/.gitleaks.toml
+
+# Reporting
+# REPORTERS_MARKDOWN_SUMMARY_TYPE: sections
+SHOW_ELAPSED_TIME: true
+SARIF_REPORTER: true
+
+# PRE_COMMANDS:
+PRE_COMMANDS:
+  - command: |
+      cd /tmp/lint
+      rm -rf node_modules package-lock.json
+
+      echo "Current directory: $(pwd)"
+      if [ ! -f "package.json" ]; then
+        echo "Locale package.json not found. Load central standards..."
+        curl -sSL https://raw.githubusercontent.com/jmuelbert/jm-github-standards/main/package.json -o package.json
+      fi
+
+      echo "Running clean npm install..."
+      npm install --no-package-lock --prefer-offline --no-audit
+
+    cwd: root # Will be run at the root of MegaLinter docker image
+    secured_env: true # True by default, but if defined to false, no global variable will be hidden (for example if you need GITHUB_TOKEN)
