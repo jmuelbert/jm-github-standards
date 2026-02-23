@@ -9,7 +9,7 @@ name: Scheduled Maintenance
 on:
   schedule:
     - cron: 0 0 * * 1 # Every Monday at 4 am
-  workflow_dispatch: # Allow manual start
+  workflow_dispatch:
 
 permissions:
   contents: write
