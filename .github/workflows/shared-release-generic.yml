@@ -77,6 +77,32 @@ jobs:
         with:
           enable-cache: true
 
+      - name: 🏷️ Update Floating Tags (Dynamic)
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          # 1. Version aus dem Release extrahieren (z.B. 0.1.7)
+          VERSION="${{ steps.semantic.outputs.new_release_version }}"
+          echo "Processing tags for version: v$VERSION"
+
+          # 2. Major (v0) und Minor (v0.1) berechnen
+          MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          MINOR=$(echo "$VERSION" | cut -d. -f1,2)
+
+          # 3. Git Identität setzen (für den lokalen Tag-Befehl)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # 4. Tags lokal forcieren
+          git tag -f "v$MAJOR"
+          git tag -f "v$MINOR"
+
+          # 5. Tags mit Force zu GitHub schieben
+          echo "Pushing floating tags v$MAJOR and v$MINOR..."
+          git push origin "v$MAJOR" --force
+          git push origin "v$MINOR" --force
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+
       - name: 📚 Deploy Documentation
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
