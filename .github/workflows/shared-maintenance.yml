@@ -52,7 +52,7 @@ jobs:
           egress-policy: audit
 
       - name: 🧰 Checkout Repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Run Repolinter
         uses: newrelic/repolinter-action@3f4448f855c351e9695b24524a4111c7847b84cb # v1.7.0
@@ -78,14 +78,14 @@ jobs:
           egress-policy: audit
 
       - name: 🧰 Checkout Repository
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
           persist-credentials: false
 
       # 1. Greet New Contributors
       - name: 👋 Welcome New Contributors
-        uses: actions/first-interaction@v1
+        uses: actions/first-interaction@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
@@ -100,7 +100,7 @@ jobs:
       # 2. Process Stale Items with dynamic inputs
       - name: 🧹 Process Stale Items
         id: stale
-        uses: actions/stale@997185467fa4f803885201cee163a9f38240193d # v10.1.1
+        uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
         with:
           # Issues configuration
           stale-issue-message: This issue is stale because it has been inactive for ${{ inputs.days-before-issue-stale }} days.
