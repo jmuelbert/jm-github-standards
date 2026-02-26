@@ -1,15 +1,11 @@
 ---
 # Bug Report Template
 # This template is for reporting bugs in the jm-github-standards project.
-# It is based on the GitHub Issue Template schema.
-# SPDX-License-Identifier: CC-BY-SA-4.0
-# SPDX-FileCopyrightText: 2026 - present Jürgen Mülbert <juergen.muelbert@gmail.com>
-# yaml-language-server: $schema= https://json.schemastore.org/github-issue-template-1.0.0.json
-# The name of the issue template
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-template-1.0.0.json
 
-name: \U0001F41E Bug report
-description: Report a bug in jm-github-standards. To report a security issue, please instead use the security option below. For questions, please use the GitHub Discussions.
-title: 🐛 [BUG] - <title>
+name: 🐛 Bug report
+description: Report a bug in jm-github-standards.
+title: "🐛 [BUG] - <title>"
 labels: [bug, triage]
 assignees:
   - jmuelbert
@@ -17,23 +13,32 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to file a bug report! Please fill out this form as completely as possible.
+        Thank you for taking the time to file a bug report!
+        Before submitting, please ensure you have searched existing issues.
 
-        ✅ I am using the **latest versions of jm-github-standards**.
   - type: input
-    id: jm-github-standards-version
+    id: version
     attributes:
-      label: What version of `jm-github-standards` are you using?
-      placeholder: 0.0.0
+      label: Version
+      description: What version of jm-github-standards are you using?
+      placeholder: v0.1.6
     validations:
       required: true
-  - type: input
-    id: os
+
+  - type: dropdown
+    id: environment
     attributes:
-      label: What operating system are you using?
-      placeholder: Mac, Windows, Linux
+      label: Environment
+      description: Where did the bug occur?
+      options:
+        - GitHub Actions (Ubuntu Runner)
+        - GitHub Actions (Windows Runner)
+        - GitHub Actions (macOS Runner)
+        - Local Environment (Taskfile)
+        - Other
     validations:
       required: true
+
   - type: textarea
     id: bug-description
     attributes:
@@ -41,95 +46,38 @@ body:
       description: A clear and concise description of what the bug is.
     validations:
       required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we encounter this bug? Please provide the Taskfile command or Workflow snippet.
+      placeholder: |
+        1. Run 'task setup'
+        2. Execute 'task lint'
+        3. See error...
+    validations:
+      required: true
+
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      label: Relevant Log Output
+      description: Please paste the output from the terminal or GitHub Action log.
       render: shell
+
   - type: checkboxes
-    id: will-pr
+    id: contribution
     attributes:
       label: Participation
       options:
         - label: I am willing to submit a pull request for this issue.
-          required: false
+
   - type: checkboxes
     id: terms
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/jmuelbert/jm-github-standards/blob/main/CODE_OF_CONDUCT.md)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/jmuelbert/jm-github-standards/blob/main/.github/CODE_OF_CONDUCT.md)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
-          # .github/ISSUE_TEMPLATE/bug-report.yml
-          name: 🐛 Bug report
-          description: Report a bug in jm-github-standards.
-          title: 🐛 [BUG] - <title>
-          labels: [bug, triage]
-          assignees:
-            - jmuelbert
-          body:
-            - type: markdown
-              attributes:
-                value: |
-                  Thank you for taking the time to file a bug report!
-                  Before submitting, please ensure you have searched existing issues.
-
-            - type: input
-              id: version
-              attributes:
-                label: Version
-                description: What version of jm-github-standards are you using? (Check via git tag or release)
-                placeholder: v1.2.3
-              validations:
-                required: true
-
-            - type: dropdown
-              id: environment
-              attributes:
-                label: Environment
-                description: Where did the bug occur?
-                options:
-                  - GitHub Actions (Ubuntu Runner)
-                  - GitHub Actions (Windows Runner)
-                  - GitHub Actions (macOS Runner)
-                  - Local Environment (Taskfile)
-                  - Other
-              validations:
-                required: true
-
-            - type: textarea
-              id: reproduction
-              attributes:
-                label: Steps to Reproduce
-                description: How can we encounter this bug? Please provide the Taskfile command or Workflow snippet.
-                placeholder: |
-                  1. Run 'task setup'
-                  2. Execute 'task lint'
-                  3. See error...
-              validations:
-                required: true
-
-            - type: textarea
-              id: logs
-              attributes:
-                label: Relevant Log Output
-                description: Please paste the output from the terminal or GitHub Action log.
-                render: shell
-
-            - type: checkboxes
-              id: contribution
-              attributes:
-                label: Participation
-                options:
-                  - label: I am willing to submit a pull request for this issue.
-
-            - type: checkboxes
-              id: terms
-              attributes:
-                label: Code of Conduct
-                description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/jmuelbert/jm-github-standards/blob/main/.github/CODE_OF_CONDUCT.md)
-                options:
-                  - label: I agree to follow this project's Code of Conduct
-                    required: true
