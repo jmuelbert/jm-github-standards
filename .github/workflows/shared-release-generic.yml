@@ -63,7 +63,7 @@ jobs:
 
       - name: Semantic Release
         id: semantic
-        uses: cycjimmy/semantic-release-action@1c8dbaa298552ad40802cf44320879943de90278 # v6.0.0
+        uses: cycjimmy/semantic-release-action@17c68674d8eefe34b5d2e0db12684eaed1deb93a # v6.0.0
         with:
           extra_plugins: |
             @semantic-release/changelog
