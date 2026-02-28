@@ -24,6 +24,7 @@
   { "name": "breaking-label", "color": "d93f0b", "description": "Breaking changes detected in body" },
   { "name": "merge-conflict", "color": "444444", "description": "PR has merge conflicts" },
 
+  { "name": "triage", "color": "ededed", "description": "Indicates an issue needs to be triaged" },
   { "name": "status: work-in-progress", "color": "f9d0c4", "description": "PR is still being worked on" },
   { "name": "status: ready-for-review", "color": "c2e0c6", "description": "PR is ready for human eyes" },
 
