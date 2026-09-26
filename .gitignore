@@ -1,18 +1,151 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+# ====================================================================
+# PROJECT CORE (Modern Tooling)
+# ====================================================================
+.venv/
+node_modules/
+.lefthook/
+.cache/
+.cspellcache/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+megalinter-reports/
+.mega-linter.log
+*.bak
+*.swp
+.directory
+temp_*/
 
-# Other files and folders
-.settings/
+# Lychee
+cookie-jar
+.lycheecache
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+# Ignoriere alle temporären Shell-Skripte
+temp_*.sh
+temp_*.txt
+temp_*.md
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# Oder ignoriere einen ganzen Ordner für Experimente
+scripts/scratchpad/
+
+# ====================================================================
+# BUILD & COMPILATION (Global Patterns)
+# ====================================================================
+[Bb]uild/
+[Dd]ebug/
+[Oo]ut/
+[Tt]esting/
+target/
+dist/
+bin/
+# Compiled objects, libraries and executables
+*.o
+*.obj
+*.so
+*.so.*
+*.a
+*.lib
+*.la
+*.lai
+*.lo
+*.slo
+*.dll
+*.dylib
+*.exe
+*.out
+*.app
+*.pdb
+*.ilk
+*.exp
+
+# ====================================================================
+# LANGUAGES SPECIFIC
+# ====================================================================
+# Python
+__pycache__/
+*.py[codz]
+*$py.class
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.pdm-python
+.pdm-build/
+
+# Rust
+**/*.rs.bk
+**/mutants.out*/
+
+# C++ & CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+CMakeUserPresets.json
+
+# Qt
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+/.qmake.cache
+/.qmake.stash
+*.pro.user*
+*_qmlcache.qrc
+
+# ====================================================================
+# DOCUMENTATION & CONFIG
+# ====================================================================
+/site/
+.vale/
+# Important: Do NOT ignore .github/config/styles if you commit them
+
+# ====================================================================
+# Astro specific
+# ====================================================================
+.astro/
+
+# ====================================================================
+# IDE & OS
+# ====================================================================
+.idea/
+.vscode/
+*.iml
+*.autosave
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# ====================================================================
+# DATABASE & LOGS
+# ====================================================================
+*.log
+*.sqlite*
+*.db
+*.db-*
+*.db3
+*.db3-*
+.env
+.env.production
+.envrc
+.cspellcache
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
