@@ -1,0 +1,15 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+# --- REPOSITORY METADATA ---
+#  This file contains configuration for repository metadata and versioning.
+
+#  The target version for the next release (without 'v')
+target_version: 3.0.0
+# Controls whether the release is marked as a pre-release
+is_prerelease: false
+
+# Optional: Additional information for automation
+project_name: GitHub Standards
+description: Centralized GitHub Actions and Governance Standards
