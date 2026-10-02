@@ -1,0 +1,59 @@
+---
+# .github/config/.ls-lint.yml
+# Centralized naming convention standards for polyglot repositories
+
+ls:
+  # --- Directory Rules ---
+  dir:
+    .: kebab-case | camelCase # Global default for general folders
+
+    # Language-specific folder exclusions (if needed)
+    # python_modules: snake_case
+
+  # --- File Rules grouped by Domain ---
+  file:
+    # 1. Global Defaults & Configs
+    .: kebab-case | camelCase
+
+    # 2. Documentation & Web (Frontend / Starlight)
+    .md: kebab-case | camelCase | PascalCase | regex:^[A-Z_]+$
+    .mdx: kebab-case | camelCase | PascalCase
+    .html: kebab-case
+    .css: kebab-case
+
+    # 3. Backend Languages (Strictly separated by extension)
+    # --- JavaScript / TypeScript / JSON ---
+    .js: kebab-case | camelCase
+    .ts: kebab-case | camelCase
+    .json: kebab-case | camelCase
+
+    # --- Python (PEP 8 Enforced) ---
+    .py: snake_case
+
+    # --- Rust ---
+    .rs: snake_case
+
+    # --- C / C++ ---
+    .c: snake_case | kebab-case
+    .cpp: snake_case | kebab-case
+    .h: snake_case | kebab-case
+    .hpp: snake_case | kebab-case
+
+    # --- Shell & Scripts ---
+    .sh: kebab-case
+    .ps1: PascalCase | kebab-case
+
+# --- Global Ignore List ---
+ignore:
+  - .git
+  - node_modules
+  - .task
+  - .biome_cache
+  - dist
+  - build
+  - target
+  - .venv
+  - venv
+  - .pytest_cache
+  - megalinter-reports
+  - .github/workflows

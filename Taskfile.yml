@@ -1,0 +1,286 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+version: "3"
+
+# ====================================================================
+# CONFIGURATION
+# ====================================================================
+# -----------------------------------------------------------
+# 🧩 GLOBALS
+# -----------------------------------------------------------
+vars:
+  LOG: warn
+  DOMAIN: jm-github-standards
+  BASE_URL: https://jmuelbert.github.io/{{ .DOMAIN }}/
+  SRC_DIR: scripts
+  DOCS_DIR: docs-site
+
+tasks:
+  # ====================================================================
+  # 🪵 INTERNAL HELPERS
+  # ====================================================================
+  _log:
+    internal: true
+    silent: true
+    # TYPE: info, success, warn, error
+    vars:
+      SYMBOL:
+        sh: |
+          case "{{.TYPE}}" in
+            info) echo "ℹ️" ;;
+            success) echo "✅" ;;
+            warn) echo "⚠️" ;;
+            error) echo "❌" ;;
+            *) echo "" ;;
+          esac
+    cmds:
+      - echo "{{.SYMBOL}} [{{.TYPE | upper}}] {{.MSG}}"
+
+  # ====================================================================
+  # 1. SETUP & ENVIRONMENT
+  # ====================================================================
+  setup:
+    desc: "Complete project setup: uv (Python), pnpm (Node), Lefthook & REUSE"
+    cmds:
+      - task: _log
+        vars: { MSG: Initializing development environment..., TYPE: info }
+      # - go mod download
+      - pnpm self-update
+      - pnpm install
+      - pnpm run docs:update
+      - pnpm dlx lefthook install
+      - pnpm run docs:vale:sync
+      - task: _log
+        vars: { MSG: ✅ Setup complete. All dependencies installed and Git-Hooks active!, TYPE: success }
+
+  maintenance:update-all:
+    desc: Updates all dependencies (pnpm, uv, lefthook) and licenses
+    cmds:
+      - pnpm self-update
+      - pnpm update --latest
+      - pnpm run docs:update
+      - task: lint
+      - task: _log
+        vars: { MSG: Project dependencies and compliance updated., TYPE: success }
+
+  clean-all:
+    desc: Clean all transient files and caches
+    cmds:
+      - task: _log
+        vars: { MSG: "🧹 Cleaning caches, builds, and translation files...", TYPE: info }
+      - rm -rf  .cache .tmp/ node_modules/
+      - task: clean
+      - task: _log
+        vars: { MSG: 🧹 All cleaned, TYPE: success }
+
+  # ====================================================================
+  # 2. QUALITY CONTROL (LINT & FORMAT)
+  # ====================================================================
+  lint:
+    desc: Run all linting
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Linting all..., TYPE: info }
+      - task: lint:standards
+      - task: lint:yaml
+      - task: lint:toml
+      - task: lint:docs
+      - task: lint:commit
+      - task: _log
+        vars: { MSG: ✅ All linting complete., TYPE: success }
+
+  lint:standards:
+    internal: true
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Checking REUSE compliance & GitHub Actions..., TYPE: info }
+      - go run github.com/rhysd/actionlint/cmd/actionlint@latest .github/workflows/*.yml
+      - pnpm run lint
+      - task: _log
+        vars: { MSG: ✅ linting standards complete., TYPE: success }
+
+  lint:yaml:
+    desc: Runs yamllint to check all YAML files.
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Running yaml linting..., TYPE: info }
+      - pnpm run lint:yaml
+      # - uv run yamllint -c .yamllint.yml .
+      - task: _log
+        vars: { MSG: ✅ yaml linting complete., TYPE: success }
+
+  lint:commit:
+    desc: Validate the last commit message for SemVer compliance
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Running commit linting..., TYPE: info }
+      - pnpm exec commitlint --from HEAD~1 --to HEAD --verbose
+      - task: _log
+        vars: { MSG: ✅ commit linting complete., TYPE: success }
+
+  check:links:
+    desc: Validate markdown links via pnpm script
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Running check links..., TYPE: info }
+      - |
+        if ! command -v lychee &> /dev/null; then
+          echo "⚠️ lychee not found. Installing via cargo..."
+          cargo install lychee
+          lychee .  # Führe lychee nach der Installation aus
+        else
+          echo "✅ lychee is installed. Running link check..."
+          lychee .
+        fi
+
+  lint:toml:
+    desc: Validate toml-files via tombi
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Running toml-linting..., TYPE: info }
+      - pnpm run lint:toml
+      - task: _log
+        vars: { MSG: ✅ toml linting complete., TYPE: success }
+
+  lint:docs:
+    desc: Lint general repository documentation (README, CONTRIBUTING, etc.)
+    cmds:
+      - task: _log
+        vars: { MSG: ✍️ Checking general documentation, TYPE: info }
+      - task: _log
+        vars: { MSG: 🔍 Checking repository links..., TYPE: info }
+      - task check:links
+      - task: _log
+        vars: { MSG: ✍️ Checking the spelling, TYPE: info }
+      - pnpm run docs:cspell
+      - task: _log
+        vars: { MSG: ✍️ Checking general documentation with Vale..., TYPE: info }
+      - pnpm run docs:vale
+      - task: _log
+        vars: { MSG: ✅ linting docs complete., TYPE: success }
+
+  format:toml:
+    desc: Format toml-files via tombi
+    cmds:
+      - task: _log
+        vars: { MSG: 🎨 Running toml-formatter..., TYPE: info }
+      - pnpm format:toml
+      - task: _log
+        vars: { MSG: ✅ toml formatting complete., TYPE: success }
+
+  format:
+    desc: Format code and docs
+    cmds:
+      - task: _log
+        vars: { MSG: 🎨 Running formatters..., TYPE: info }
+      - pnpm run format
+      - task: _log
+        vars: { MSG: ✅ formatting complete., TYPE: success }
+
+  # ====================================================================
+  # 3. DOCUMENTATION & LINKS
+  # ====================================================================
+  docs:lint:
+    desc: Full checking for documentation with spell-check, vale-check and link check.
+    cmds:
+      - task: _log
+        vars: { MSG: 📚 Checking documentation integrity..., TYPE: info }
+      - pnpm run docs:full-check
+      - pnpm run docs:build
+      - task: _log
+        vars: { MSG: ✅ docs linting complete., TYPE: success }
+
+  docs:dev:
+    desc: Preview documentation locally
+    cmds:
+      - task: _log
+        vars: { MSG: 🌐 Serving documentation..., TYPE: info }
+      - pnpm run docs:dev
+      - task: _log
+        vars: { MSG: ✅ docs serving complete., TYPE: success }
+
+  docs:build:
+    desc: Build production documentation
+    deps: [docs:lint]
+    cmds:
+      - task: _log
+        vars: { MSG: 📘 Building documentation..., TYPE: info }
+      - pnpm run docs:build
+
+  fix:reuse:
+    desc: Add license headers to source files
+    cmds:
+      - echo "Reuse not installed"
+      # yamllint disable-line rule:line-length
+      # - uv run reuse annotate --license EUPL-1.2 --copyright "Jürgen Mülbert <juergen.muelbert@gmail.com>" {{.SRC_DIR}}/**/*
+      # yamllint enable
+
+  # ====================================================================
+  # 4. HEAVY LINTING (Docker)
+  # ====================================================================
+  megalinter:
+    desc: Run all static code analysis via MegaLinter Docker image.
+    cmds:
+      - task: _log
+        vars: { MSG: 🐳 Starting MegaLinter analysis via Docker..., TYPE: info }
+      - |
+        rm -rf megalinter-reports
+        docker run --rm \
+          -v "$(pwd)":/tmp/lint \
+          -e DISABLE_ERRORS_ON_LINTER="none" \
+          -e JSON_REPORTER=false \
+          -e SHOW_ELAPSED_TIME=true \
+          -e VALIDATE_ALL_CODEBASE=true \
+          -e MEGALINTER_CONFIG=/.github/config/.mega-linter.yml \
+          -e APPLY_FIXES=true \
+          oxsecurity/megalinter:latest
+      - task: _log
+        vars: { MSG: ✅ MegaLinter scan complete., TYPE: success }
+
+  # ====================================================================
+  # 5. Build & Package
+  # ====================================================================
+  build:
+    desc: Build the project.
+    cmds:
+      - task: _log
+        vars: { MSG: 📦 Building project..., TYPE: info }
+  test:
+    desc: Run tests.
+    cmds:
+      - task: _log
+        vars: { MSG: 🧪 Running tests..., TYPE: info }
+
+  clean:
+    desc: Clean up build artifacts.
+    cmds:
+      - task: _log
+        vars: { MSG: 🧹 Cleaning up..., TYPE: info }
+
+  format-code:
+    desc: Format code using Prettier.
+    cmds:
+      - task: _log
+        vars: { MSG: 🎨 Formatting code..., TYPE: info }
+      - task: pnpm run format:biome
+
+  lint-code:
+    desc: Lint code using MegaLinter.
+    cmds:
+      - task: _log
+        vars: { MSG: 🧹 Linting code..., TYPE: info }
+      - task: pnpm run lint:biome
+
+  install-project:
+    desc: Install dependencies.
+    cmds:
+      - task: _log
+        vars: { MSG: 📦 Installing project..., TYPE: info }
+
+  dev:
+    desc: Development mode with debugging.
+    cmds:
+      - task: _log
+        vars: { MSG: 🚀 Running development server..., TYPE: info }

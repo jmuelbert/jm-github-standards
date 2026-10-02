@@ -1,0 +1,43 @@
+[
+  { "name": "bug", "color": "d73a4a", "description": "Indicates an unexpected problem or unintended behavior" },
+  { "name": "documentation", "color": "0075ca", "description": "Docs and guides" },
+  { "name": "duplicate", "color": "cfd3d7", "description": "This issue or pull request already exists" },
+  { "name": "enhancement", "color": "a2eeef", "description": "New feature or request" },
+  { "name": "good first issue", "color": "7057ff", "description": "Good for newcomers" },
+  { "name": "help wanted", "color": "008672", "description": "Extra attention is needed" },
+  { "name": "invalid", "color": "e4e669", "description": "This doesn't seem right" },
+  { "name": "question", "color": "d876e3", "description": "Further information requested" },
+  { "name": "wontfix", "color": "ffffff", "description": "This will not be worked on" },
+
+  { "name": "type-bug", "color": "d73a4a", "description": "Categorized as bug via triage logic" },
+  { "name": "type-feature", "color": "a2eeef", "description": "Categorized as feature via triage logic" },
+  { "name": "type-crash", "color": "b60205", "description": "Automated detection of a system crash" },
+  { "name": "type-investigation", "color": "f9d0c4", "description": "Categorized for technical investigation" },
+  { "name": "type-documentation", "color": "0075ca", "description": "Broken links or formatting errors in docs" },
+
+  { "name": "needs-triage", "color": "fbca04", "description": "New item awaiting classification" },
+  { "name": "needs-investigation", "color": "f9d0c4", "description": "Requires deeper technical analysis" },
+  { "name": "high-priority", "color": "e11d21", "description": "Critical path - address immediately" },
+  { "name": "regression", "color": "d73a4a", "description": "Functionality that used to work but is now broken" },
+
+  { "name": "source", "color": "1d76db", "description": "Source code changes" },
+  { "name": "test", "color": "207de5", "description": "Tests and test config" },
+  { "name": "dependencies", "color": "8732bc", "description": "Package and build updates" },
+  { "name": "fix", "color": "d73a4a", "description": "Bug fixes" },
+  { "name": "ci", "color": "5319e7", "description": "CI/CD and GitHub config" },
+  { "name": "chore", "color": "ededed", "description": "Maintenance and tool configs" },
+  { "name": "release", "color": "f9d0c4", "description": "Release related changes" },
+
+  { "name": "patch-update", "color": "0e8a16", "description": "SemVer Patch update" },
+  { "name": "minor-update", "color": "fbca04", "description": "SemVer Minor update" },
+  { "name": "major-update", "color": "d93f0b", "description": "SemVer Major update (breaking)" },
+
+  { "name": "security", "color": "b60205", "description": "Security vulnerability fix" },
+  { "name": "security-review", "color": "d8000c", "description": "Manual security review required" },
+  { "name": "security-label", "color": "e99695", "description": "Security-related content detected" },
+
+  { "name": "status: work-in-progress", "color": "f9d0c4", "description": "PR is still being worked on" },
+  { "name": "status: ready-for-review", "color": "c2e0c6", "description": "PR is ready for human eyes" },
+  { "name": "governance", "color": "006b75", "description": "Related to project standards, licenses, and compliance" },
+  { "name": "status: stale", "color": "ffffff", "description": "Inactive for a longer period of time" }
+]

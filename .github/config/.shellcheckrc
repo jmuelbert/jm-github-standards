@@ -1,0 +1,17 @@
+# .github/config/.shellcheckrc
+
+# Erlaube das Einbinden von Dateien ohne absoluten Pfad (Source-Befehl)
+disable=SC1090,SC1091
+
+# Warnen bei unquoted Variablen (verhindert Word Splitting Fehler)
+enable=add-default-authorlib
+
+# Farbausgabe erzwingen
+color=always
+
+# Shell-Typ festlegen (Bash ist Standard für deine Scripte)
+shell=bash
+
+# Zusätzliche Prüfungen für Fortgeschrittene aktivieren
+enable=quote-safe-variables
+enable=check-unassigned-uppercase
