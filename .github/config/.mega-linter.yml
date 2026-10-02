@@ -1,0 +1,159 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: Jürgen Mülbert <juergen.muelbert@gmail.com>
+#
+# .mega-linter.yml
+# Optimized for C++, Python, Rust, PowerShell, Shell, Documentation, and Security.
+
+# --- Core Settings ---
+# If you want to validate all codebase, set this to true.
+VALIDATE_ALL_CODEBASE: false
+
+# --- Enable/Disable Strategy ---
+# We use ENABLE_LINTERS for max speed and security.
+# Remove the large 'DISABLE' block as it is now redundant.
+
+# --- Linter Selection ---
+ENABLE_LINTERS:
+  # 1. Languages
+  # - BASH_EXEC # Basic shell script syntax check
+  # - BASH_SHELLCHECK # Advanced Shell script linter (your core need)
+  # - BASH_SHFMT # Shell script formatter (shfmt)
+  # - CPP_CPPCHECK # C++ linter (cppcheck)
+  # - CPP_CPPLINT # C++ linter (cpplint)
+  # - CPP_CLANG_FORMAT # C++ linter (clang-format)
+  # - JAVASCRIPT_ES # JavaScript linter (ESLint) - Leave disabled,use biome from Workflow
+  # - JAVASCRIPT_PRETTIER # JavaScript formatter (prettier) - Leave disabled,use biome from Workflow
+  # - POWERSHELL_POWERSHELL # PowerShell linter (PSScriptAnalyzer)
+  # - POWERSHELL_POWERSHELL_FORMATTER # PowerShell formatter (PSScriptAnalyzer)
+  # - PYTHON_PYRIGHT # Python linter (pyright)
+  # - PYTHON_RUFF # Python linter (ruff)
+  # - RUST_CLIPPY # Rust linter (clippy)
+
+  # 2. Formats
+  - JSON_JSONLINT # General JSON files
+  - JSON_V8R # JSON schema validation
+  - JSON_PRETTIER # JSON formatter (prettier)
+  - JSON_NPM_PACKAGE_JSON_LINT # Specific checks for package.json integrity (Keep this since you use pnpm)
+  - MARKDOWN_MARKDOWNLINT # Markdown file structure and style
+  - MARKDOWN_MARKDOWN_TABLE_FORMATTER # Markdown table formatter (markdown-table-formatter)
+  - XML_XMLLINT # XML linter (xmllint)
+  - YAML_PRETTIER # YAML formatter (prettier)
+  - YAML_YAMLLINT # General YAML config files (CI, mkdocs, etc.)
+  - YAML_V8R # YAML schema validation
+
+  # 3. Tooling formats
+  - ACTION_ACTIONLINT # GitHub Actions syntax and expression validation
+  - ACTION_ZIZMOR # NEW: GitHub Actions security vulnerability scanner
+  # - DOCKERFILE_HADOLINT # Dockerfile linter (hadolint)
+  # - TERRAFORM_TFLINT # Terraform linter (terraform)
+  # - TERRAFORM_TERRAFORM_FMT # Terraform formatter (terraform)
+
+  # 4. Other
+  - REPOSITORY_GIT_DIFF # Checks for changes in the repository
+  - REPOSITORY_LS_LINT # Enforces consistent file and directory naming
+  - REPOSITORY_SEMGREP # Static code analysis for security vulnerabilities and coding standards
+  - REPOSITORY_OSV_SCANNER # Dependency vulnerability scanner from Google
+  - REPOSITORY_KINGFISHER # Secret-scanning and live validation tool built in Rust
+
+  # 4.1 Spelling & Style
+  - SPELL_CSPELL # Spelling check (Crucial)
+  - SPELL_VALE # Documentation style and grammar check
+
+DISABLE_ERRORS_LINTERS:
+  - SPELL_CSPELL # Writing issues should not stop the build most of the time
+  - SPELL_VALE
+
+# --- Configuration Arguments ---
+
+# --- Exclusion List (To avoid running on third-party folders) ---
+EXCLUDED_DIRECTORIES:
+  - ...
+  - .biome_cache
+  - .task
+  - node_modules
+  - .venv
+  - venv
+  - dist
+  - .git
+  - megalinter-reports
+  - .my_cache
+  - target
+  - build
+  - .pytest_cache
+  - .cspellcache
+
+# Excludes
+JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
+YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (docs/|\.github/styles/)
+YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (\.github/config|mkdocs.yml|pnpm-lock.yaml)
+
+# Configs
+ACTION_ZIZMOR_UNSECURED_ENV_VARIABLES:
+  - GITHUB_TOKEN
+
+BASH_SHELLCHECK_CONFIG_FILE: .github/config/.shellcheckrc
+
+DOCKERFILE_HADOLINT_ARGUMENTS:
+  - --ignore DL3003
+  - --ignore DL3007
+  - --ignore DL3013
+  - --ignore DL3016
+  - --ignore DL3018
+  - --ignore DL3028
+  - --ignore DL3059
+  - --ignore DL4001
+  - --ignore DL4006
+  - --ignore SC2015
+  - --ignore SC2016
+  - --ignore SC2039
+  - --ignore SC2086
+  - --ignore SC1091
+  - --ignore SC3046
+
+MARKDOWN_MARKDOWNLINT_CONFIG_FILE: .markdownlint.json
+MARKDOWN_FILTER_REGEX_EXCLUDE: (license\.md|docs/licenses|LICENSE|LICENSES)
+
+# Powershell Analyzer JSON_PRETTIER_COMMAND_REMOVE_ARGUMENTS:
+POWERSHELL_POWERSHELL_ARGUMENTS:
+  - -ExcludeRule
+  - PSUseBOMForUnicodeEncodedFile
+POWERSHELL_POWERSHELL_DISABLE_ERRORS: true
+
+# Arguments for linters that need specific settings
+PYTHON_RUFF_CONFIG_FILE: pyproject.toml
+PYTHON_PYRIGHT_CONFIG_FILE: pyproject.toml
+PYTHON_DEFAULT_STYLE: ruff
+
+REPOSITORY_LS_LINT_CONFIG_FILE: .github/config/.ls-lint.yml
+RUST_CLIPPY_ARGUMENTS: [--, -D, warnings]
+
+# Tell MegaLinter where to find the Vale config file
+SPELL_VALE_ARGUMENTS: --config=.github/config/.vale.ini
+SPELL_VALE_FILE_EXTENSIONS:
+  - .md
+  - .mdx
+  - .txt
+SPELL_VALE_FILTER_REGEX_EXCLUDE: (\.github|docs/de|docs/generated|site|LICENSE|LICENSES|CODE_OF_CONDUCT\.md|CHANGELOG\.md)
+SPELL_FILTER_REGEX_EXCLUDE: (\.github|docs/licenses|LICENSE|LICENSES)
+
+# --- Reporting Configuration ---
+# Active reporters to provide feedback in different formats
+# Creates security reports for the GitHub Security tab
+# Active reporters to provide feedback in different formats
+# Layout type for the Markdown summary (sections, table, or simple)
+# 'sections' provides a detailed breakdown per linter group
+REPORTERS_MARKDOWN_SUMMARY_TYPE: sections
+
+# Performance and visibility settings
+SHOW_ELAPSED_TIME: true # Shows execution duration for each linter
+SARIF_REPORTER: true # Ensures SARIF files are generated for security analysis
+
+# Display flavor suggestions (set to false to keep logs clean as discussed)
+FLAVOR_SUGGESTIONS: false
+
+# --- Pre-Commands (Tailored for CSpell Foreign Languages) ---
+PRE_COMMANDS:
+  - command: npm install -g @cspell/dict-de @cspell/dict-es --prefer-offline --no-audit
+    cwd: workspace
+    secured_env: true

@@ -1,0 +1,20 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# .gitlocalize.yaml
+
+projects:
+  - id: 10736
+    languages:
+      - de
+      - es
+    paths:
+      # 1. Single Files in the Root Directory
+      - path: README.md
+        dest: i18n/{lang}/README.md
+      - path: .github/CONTRIBUTING.md
+        dest: i18n/{lang}/CONTRIBUTING.md
+
+      # 2. Docs Content
+      - path: docs
+        dest: docs/{lang}
+        filter: "**/*.md" # Only Markdown files in this directory

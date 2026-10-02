@@ -1,0 +1,91 @@
+{
+	"name": "jm-github-standards",
+	"version": "1.0.0",
+	"description": "jm github standards",
+	"main": "index.js",
+	"type": "module",
+	"scripts": { 
+		"docs:build": "pnpm --filter ./docs build",
+		"docs:dev": "pnpm --filter ./docs dev",
+		"docs:preview": "pnpm --filter ./docs preview",
+		"docs:astro": "pnpm --filter ./docs astro",
+		"docs:clean": "pnpm --filter ./docs clean",
+		"docs:update": "pnpm --filter ./docs update",
+		"docs:cspell": "cspell --no-progress",
+		"docs:cspell:docs": "cspell --no-progress docs/**",
+		"docs:cspell:project-words": "echo '# New Words' >> project-words.txt && cspell --words-only --unique | sort --ignore-case >> project-words.txt",
+		"docs:cspell:suggests": "cspell --no-progress --show-suggestions --show-context",
+		"docs:vale:sync": "pnpm vale sync",
+		"docs:vale": "vale README.md .github/CONTRIBUTING.md .github/CODE_OF_CONDUCT.md",
+		"docs:vale:docs": "vale docs/docs",
+		"docs:full-check": "pnpm docs:clean && pnpm docs:cspell:docs && pnpm docs:vale:docs",
+		"docs:lint": "pnpm lint:prettier && pnpm lint:markdown && pnpm docs:vale && pnpm docs:cspell",
+		"lint:biome": "biome check .",
+		"fix:biome": "biome check . --fix",
+		"format:biome": "biome format --write",
+		"lint:prettier": "prettier --check .",
+		"format:prettier": "prettier --write .",
+		"lint:markdown": "markdownlint --dot --config .markdownlint.json '**/*.{md,markdown,mdx,adoc,asciidoc}'",
+		"lint:reuse": "echo 'REUSE-Compliance is requested via GitHub Action (Heavy-Check).'",
+		"lint:toml": "tombi lint",
+		"format:toml": "tombi format",
+		"lint:typecheck": "pnpm --recursive run typecheck",
+		"lint:yaml": "echo 'YAML-Check is requested via GitHub Action (Heavy-Check).'",
+		"lint": "pnpm lint:biome && pnpm lint:typecheck && pnpm lint:prettier && pnpm lint:toml && pnpm lint:markdown",
+		"format": "pnpm format:biome && pnpm format:prettier && pnpm format:toml",
+		"changelog": "git-cliff --output CHANGELOG.md",
+		"changelog:check": "git-cliff --output CHANGELOG.md --unreleased",
+		"changelog:version": "git-cliff --tag $npm_config_version --output CHANGELOG.md"
+	},
+	"keywords": [
+		"develop",
+		"dev tools",
+		"spellcheck"
+	],
+	"author": "Jürgen Mülbert",
+	"license": "EUPL-1.2",
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.16",
+		"@commitlint/config-conventional": "^21.0.2",
+		"@cspell/dict-de-de": "^4.1.2",
+		"@cspell/dict-es-es": "^3.0.8",
+		"@cspell/dict-it-it": "^3.1.6",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"@vvago/vale": "^3.12.0",
+		"commitlint": "^21.0.2",
+		"cspell": "^10.0.1",
+		"gh-pages": "^6.3.0",
+		"git-cliff": "^2.13.1",
+		"globals": "^17.6.0",
+		"lefthook": "^2.1.9",
+		"markdownlint": "^0.40.0",
+		"markdownlint-cli": "^0.48.0",
+		"prettier": "^3.8.3",
+		"tombi": "^1.1.1",
+		"typescript": "~6.0.3"
+	},
+	"browserslist": {
+		"production": [
+			">0.5%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 3 chrome version",
+			"last 3 firefox version",
+			"last 5 safari version"
+		]
+	},
+	"packageManager": "pnpm@10.33.2",
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"@vvago/vale",
+			"cspell",
+			"lefthook"
+		]
+	},
+	"engines": {
+		"node": ">=22.0"
+	}
+}

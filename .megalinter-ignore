@@ -1,0 +1,4 @@
+site/
+dist/
+.cache/
+project-words.txt

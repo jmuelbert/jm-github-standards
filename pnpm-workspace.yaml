@@ -1,0 +1,11 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+packages:
+  - docs
+allowBuilds:
+  core-js: true
+  core-js-pure: true
+  lefthook: true
+  sharp: false

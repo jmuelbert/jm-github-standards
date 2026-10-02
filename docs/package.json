@@ -1,0 +1,23 @@
+{
+  "name": "@jm-github-standards/docs",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "clean": "rm -rf docs/.astro && rm -rf docs/dist && rm -rf node_modules/.vite",
+    "typecheck": "tsc --noEmit",
+    "update": "pnpm dlx @astrojs/upgrade"
+  },
+  "devDependencies": {
+    "@astrojs/markdown-remark": "^7.2.0",
+    "@astrojs/mdx": "^6.0.2",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/starlight": "^0.39.3",
+    "@astrojs/starlight-docsearch": "^0.7.0",
+    "astro": "^6.4.4",
+        "sharp": "^0.34.5"
+  }
+}
