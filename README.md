@@ -16,7 +16,7 @@
 
 [![MegaLinter][MegaLinter-badge]][MegaLinter-link]
 
-&nbsp; &nbsp; │ &nbsp; &nbsp;
+&nbsp; &nbsp; │ &nbsp; &nbsp;‰
 
 [![License: EUPL 1.2][eupl-badge]][eupl-link] &nbsp;
 [![License: CC BY 4.0][cc-badge]][cc-link]
@@ -112,7 +112,7 @@ This project follows a dual-licensing strategy:
 
 [scorecard-badge]: https://img.shields.io/ossf-scorecard/github.com/jmuelbert/jm-github-standards?label=openssf+scorecard&style=flat
 [scorecard-link]: https://securityscorecards.dev/viewer/?uri=github.com/jmuelbert/jm-github-standards
-[OpenSSF_badge]: https://www.bestpractices.dev/projects/11865/badge
-[OpenSSF_link]: https://www.bestpractices.dev/en/projects/11865/passing
+[OpenSSF_badge]: https://www.bestpractices.dev/projects/15157/badge
+[OpenSSF_link]: https://www.bestpractices.dev/en/projects/15157/passing
 [MegaLinter-badge]: https://img.shields.io/badge/Linter-MegaLinter-blueviolet
 [MegaLinter-link]: https://megalinter.io

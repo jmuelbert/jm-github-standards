@@ -111,7 +111,9 @@ ui_*.h
 # ====================================================================
 # DOCUMENTATION & CONFIG
 # ====================================================================
-/site/
+docs/node_modules/
+docs/dist
+docs/.astro
 .vale/
 # Important: Do NOT ignore .github/config/styles if you commit them
 
