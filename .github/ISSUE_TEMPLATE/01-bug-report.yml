@@ -1,0 +1,83 @@
+---
+# Bug Report Template
+# This template is for reporting bugs in the jm-github-standards project.
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-template-1.0.0.json
+
+name: 🐛 Bug report
+description: Report a bug in jm-github-standards.
+title: 🐛 [BUG] - <title>
+labels: [bug, triage]
+assignees:
+  - jmuelbert
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to file a bug report!
+        Before submitting, please ensure you have searched existing issues.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of jm-github-standards are you using?
+      placeholder: v0.1.6
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where did the bug occur?
+      options:
+        - GitHub Actions (Ubuntu Runner)
+        - GitHub Actions (Windows Runner)
+        - GitHub Actions (macOS Runner)
+        - Local Environment (Taskfile)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we encounter this bug? Please provide the Taskfile command or Workflow snippet.
+      placeholder: |
+        1. Run 'task setup'
+        2. Execute 'task lint'
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Log Output
+      description: Please paste the output from the terminal or GitHub Action log.
+      render: shell
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Participation
+      options:
+        - label: I am willing to submit a pull request for this issue.
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/jmuelbert/jm-github-standards/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

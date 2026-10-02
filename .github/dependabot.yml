@@ -1,0 +1,88 @@
+---
+version: 2
+
+updates:
+  # --- GitHub Actions & Shared Workflows ---
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    # IMPORTANT: Increase the open-pull-requests-limit, if many repositories/actions are outdated
+    open-pull-requests-limit: 10
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: chore(actions)
+      include: scope
+
+  # --- Docs (npm) in docs folder ---
+  - package-ecosystem: npm
+    directory: /docs
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      docs:
+        patterns:
+          - "@astrojs/*"
+          - astro
+          - sharp
+    labels:
+      - dependencies
+      - docs
+    commit-message:
+      prefix: chore(docs)
+      include: scope
+    open-pull-requests-limit: 5
+  # --- Python (pip) ---
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      production:
+        dependency-type: production
+        update-types: [minor, patch]
+      development:
+        dependency-type: development
+        update-types: [minor, patch]
+    labels:
+      - dependencies
+      - python
+    commit-message:
+      prefix: chore(pip)
+    open-pull-requests-limit: 10
+
+  # --- Docker ---
+  - package-ecosystem: docker
+    directory: .devcontainer
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: chore(docker)
+
+  # --- npm (Root Tools) ---
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    labels:
+      - dependencies
+      - javascript

@@ -1,0 +1,17 @@
+---
+# .github/ISSUE_TEMPLATE/config.yml
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
+blank_issues_enabled: false # Deactivates the empty default ticket (enforces your templates)
+contact_links:
+  - name: 💡 Idea or Feature Proposal
+    url: https://github.com/jmuelbert/jm-github-standards/discussions/new?category=ideas
+    about: Please use Discussions to propose new ideas or features. Let's brainstorm first!
+
+  - name: ❓ Usage Question & Support
+    url: https://github.com/jmuelbert/jm-github-standards/discussions/new?category=q-a
+    about: If you have questions on how to use these standards, ask the community here.
+
+  - name: 💬 General Discussion
+    url: https://github.com/jmuelbert/jm-github-standards/discussions/
+    about: Anything else that doesn't fit into a bug report or a formal request.
