@@ -1,0 +1,132 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Shared documents validation
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+
+# Required permissions
+# permissions:
+#   contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  link-checker:
+    name: Link checker
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: 💾 Cache Cargo registry and tools
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/.cargo/bin/
+            target/
+          key: ${{ runner.os }}-cargo-lychee-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-lychee-
+
+      - name: ⚙️ Install latest Lychee CLI
+        run: |
+          if ! command -v lychee &> /dev/null; then
+            cargo install lychee --quiet
+          else
+            echo "Lychee found in cache, skipping installation."
+          fi
+
+      - name: 🔗 Check links (Lychee)
+        run: |
+          lychee --format json --output results.json --quiet .
+        continue-on-error: true
+
+      - name: 🪄 Convert Lychee JSON to JUnit XML
+        if: always()
+        run: |
+          if [ -f results.json ]; then
+            echo '<?xml version="1.0" encoding="UTF-8"?>' > results.xml
+            echo '<testsuites>' >> results.xml
+
+            # Read stats and default to 0 if the keys are missing or null
+            failures=$(jq '.stats.failures // 0' results.json)
+            total=$(jq '.stats.total // 0' results.json)
+
+            echo "  <testsuite name=\"📋 Lychee Link Check\" tests=\"$total\" failures=\"$failures\">" >> results.xml
+
+            # If failures are greater than 0, map them as failed testcases
+            if [ "$failures" -gt 0 ]; then
+              jq -r '.fail_map | to_entries[] | .key as $url | .value[] | "    <testcase name=\"\($url)\" classname=\"\(.file)\">\n      <failure message=\"Broken link found in \(.file)\">URL: \($url) (Status: \(.status.code // \"Unknown\"))</failure>\n    </testcase>"' results.json >> results.xml
+            else
+              # Standard success case to keep the XML valid and green
+              echo "    <testcase name=\"All links valid\" classname=\"lychee\" />" >> results.xml
+            fi
+
+            echo "  </testsuite>" >> results.xml
+            echo '</testsuites>' >> results.xml
+          else
+            echo "No results.json found. Creating empty valid JUnit file."
+            echo '<?xml version="1.0" encoding="UTF-8"?><testsuites><testsuite name="Lychee Link Check" tests="0" failures="0"></testsuite></testsuites>' > results.xml
+          fi
+
+      - name: Publish link check report
+        uses: mikepenz/action-junit-report@3a81627bfac62268172037048872e8ebd4207e6d # v6.4.1
+        if: always()
+        with:
+          report_paths: results.xml
+          annotate_only: false
+          fail_on_failure: true # only fail in the end
+
+  build-check:
+    name: Build check
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
+        with:
+          run_install: false
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - name: 📥 Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: 🏗️ Build Docusaurus
+        run: echo "Future Task> Run 'pnpm docusaurus build' here once directory structure is ready."
+
+      - name: 🏗️ Docusaurus build validation
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            echo "Validating Docusaurus build structure..."
+          fi

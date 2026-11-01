@@ -1,0 +1,108 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Quality gate trigger
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  schedule:
+    - cron: 0 4 * * 1 # weekly check stays local in trigger
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # --- QUALITY & STYLE ---
+  # Runs in parallel. It takes the longest, but no longer blocks other checks.
+  linting:
+    name: Linting
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      security-events: write
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-megalinter.yml@main
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  biome-lint:
+    name: Linting (Biome)
+    permissions:
+      contents: read
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-biome.yml@main
+
+  toml-check:
+    name: TOML Validation
+    permissions:
+      contents: read
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-toml.yml@main
+
+  # --- DOCUMENTATION ---
+  # Starts instantly. This includes your optimized Lychee link checker!
+  docs-validation:
+    name: Docs validation
+    permissions:
+      contents: read
+      issues: write
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-validation.yml@main
+
+  # --- COMPLIANCE ---
+  # Starts instantly now.
+  license-check:
+    name: License check
+    permissions:
+      contents: read
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-reuse.yml@main
+
+  # --- SECURITY ---
+  # Starts instantly. Security should never wait for style checks.
+  security-scan:
+    name: Security scan
+    permissions:
+      contents: read
+      actions: read
+      packages: read
+      security-events: write
+      pull-requests: write
+      issues: write
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-codeql-analysis.yml@main
+    with:
+      # yamllint disable-line rule:quoted-strings
+      languages: '["javascript", "typescript"]'
+
+  supply-chain:
+    name: Supply chain
+    permissions:
+      contents: read
+      actions: read
+      security-events: write # Needed for Code scanning upload
+      id-token: write # Needed for OIDC token
+      pull-requests: read # Recommended for PR events
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-scorecard.yml@main
+    with:
+      publish_results: true
+    secrets:
+      SCORECARD_TOKEN: ${{ secrets.JM_BOT_TOKEN }}
+
+  # --- DEPENDENCY VALIDATION ---
+  # Starts instantly. Essential for fast feedback on PRs.
+  dependency-review:
+    name: Dependency review
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependency-review.yml@main

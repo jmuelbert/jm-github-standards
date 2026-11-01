@@ -1,0 +1,100 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Dependabot Automation
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+# Required permissions
+# permissions:
+#   contents: write
+#   pull-requests: write
+#   issues: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  dependabot:
+    name: Process Dependabot PR
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && !contains(github.event.pull_request.labels.*.name, 'do-not-merge')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    outputs:
+      dependency-names: ${{ steps.metadata.outputs.dependency-names }}
+      update-type: ${{ steps.metadata.outputs.update-type }}
+
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 📊 Fetch dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🧰 Checkout project
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: 🏛 Checkout standards
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: jmuelbert/jm-github-standards
+          path: .jm-github-standards
+          persist-credentials: false
+
+      - name: 🛠️ Run dependency handler
+        id: handler
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          DEPENDENCY_NAMES: ${{ steps.metadata.outputs.dependency-names }}
+          DEPENDENCY_TYPE: ${{ steps.metadata.outputs.dependency-type }}
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
+          ALERT_STATE: ${{ steps.metadata.outputs.alert-state }}
+        with:
+          script: |
+            const path = require('path');
+            const scriptPath = path.resolve('.jm-github-standards/.github/scripts/dependency-handler.js');
+            const moduleExport = require(scriptPath);
+            const handler = moduleExport.default || moduleExport;
+            await handler({ github, context, core });
+
+      - name: ✅ Auto-approve PR
+        id: approve
+        if: |
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+          contains(steps.metadata.outputs.dependency-names, 'test-dependencies')
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            await github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'APPROVE',
+              body: '✅ Automatically approved based on dependency type and update scope'
+            });
+
+      - name: 🔄 Enable auto-merge
+        id: merge
+        if: steps.approve.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} \
+            --auto \
+            --squash \
+            --body "Auto-merged by Dependabot 🤖"

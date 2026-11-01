@@ -1,0 +1,73 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Release
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches: [main]
+
+# Prevent multiple release workflows from running simultaneously
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  prepare:
+    name: Prepare release metadata
+    runs-on: ubuntu-latest
+    outputs:
+      next_version: ${{ steps.get-version.outputs.version }}
+      is_prerelease: ${{ steps.get-version.outputs.prerelease }}
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: 🏷️ Extract metadata
+        id: get-version
+        run: |
+          META_FILE=".github/repo-metadata.yml"
+          if [ -f "$META_FILE" ]; then
+            VERSION=$(sed -n 's/.*target_version:[[:space:]]*//p' "$META_FILE" | tr -d "'\" ")
+            PRERELEASE=$(sed -n 's/.*is_prerelease:[[:space:]]*//p' "$META_FILE" | tr -d "'\" ")
+
+            PRERELEASE=${PRERELEASE:-false}
+
+            echo "version=v$VERSION" >> "$GITHUB_OUTPUT"
+            echo "prerelease=$PRERELEASE" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Metadata file not found"
+            exit 1
+          fi
+
+  # Job 2: Call Shared Workflow
+  call-release:
+    name: Execute release
+    needs: [prepare]
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    # Using the shared workflow for standardized release logic
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-base.yml@main
+    with:
+      version: ${{ needs.prepare.outputs.next_version }}
+      is_prerelease: ${{ needs.prepare.outputs.is_prerelease == 'true' }}
+      doc_command: task docs:build
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

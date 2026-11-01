@@ -22,26 +22,6 @@ updates:
       prefix: chore(actions)
       include: scope
 
-  # --- Docs (npm) in docs folder ---
-  - package-ecosystem: npm
-    directory: /docs
-    schedule:
-      interval: weekly
-    cooldown:
-      default-days: 7
-    groups:
-      docs:
-        patterns:
-          - "@astrojs/*"
-          - astro
-          - sharp
-    labels:
-      - dependencies
-      - docs
-    commit-message:
-      prefix: chore(docs)
-      include: scope
-    open-pull-requests-limit: 5
   # --- Python (pip) ---
   - package-ecosystem: pip
     directory: /
@@ -63,7 +43,6 @@ updates:
       prefix: chore(pip)
     open-pull-requests-limit: 10
 
-  # --- Docker ---
   - package-ecosystem: docker
     directory: .devcontainer
     schedule:
@@ -86,3 +65,24 @@ updates:
     labels:
       - dependencies
       - javascript
+
+  # --- Docs (npm) in docs folder ---
+  - package-ecosystem: npm
+    directory: /docs
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      docs:
+        patterns:
+          - "@astrojs/*"
+          - astro
+          - sharp
+    labels:
+      - dependencies
+      - docs
+    commit-message:
+      prefix: chore(docs)
+      include: scope
+    open-pull-requests-limit: 5

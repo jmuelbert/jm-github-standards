@@ -28,6 +28,7 @@ ENABLE_LINTERS:
   # - POWERSHELL_POWERSHELL_FORMATTER # PowerShell formatter (PSScriptAnalyzer)
   # - PYTHON_PYRIGHT # Python linter (pyright)
   # - PYTHON_RUFF # Python linter (ruff)
+  # - RUBY_RUBOCOP # Ruby linter (rubocop)
   # - RUST_CLIPPY # Rust linter (clippy)
 
   # 2. Formats

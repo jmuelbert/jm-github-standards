@@ -17,31 +17,31 @@ and repository configurations.
 
 ### 2. Fork & Clone
 
-````bash
+```bash
   git clone [https://github.com/your-username/jm-github-standards.git](https://github.com/your-username/jm-github-standards.git)
   cd jm-github-standards
   task setup
-
+```
 
 ## 3. Documentation & Preview
 
 We use Astro with Starlight. To preview changes locally:
 
-  ```bash
-      task docs:dev
-````
+```bash
+    task docs:dev
+```
 
 ## ✅ How to Contribute
 
 ### Submitting Changes 📝
 
-1. **Branching:** Use descriptive branch names (e.g., `feat/add-biome-workflow`, `fix/docs-typo`).
+1. **Branching:** Use descriptive branch names (for example, `feat/add-biome-workflow`, `fix/docs-typo`).
 
 2. **Validation:** Run our local quality suite before pushing. This is critical to pass CI checks:
 
-```bash
+   ```bash
     task lint
-```
+   ```
 
 3. **Commits:** We follow Conventional Commits.
 
@@ -66,7 +66,7 @@ Since this project focuses on infrastructure-as-code and automation, please adhe
 
 - **Built with Astro/Starlight.**
 - **Language:** English is the primary language.
-- **i18n:** New languages are added via subdirectories in `docs/src/content/docs/` (e.g., `docs/de/`).
+- **i18n:** New languages are added via subdirectories in `docs/src/content/docs/` (for example, `docs/de/`).
 
 ### 🏷 Versioning & Releases
 

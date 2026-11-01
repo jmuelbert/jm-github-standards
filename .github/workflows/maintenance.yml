@@ -1,0 +1,44 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Scheduled maintenance trigger
+
+# yamllint disable-line rule:truthy
+on:
+  schedule:
+    - cron: 0 0 * * 1 # Every Monday at 4 am
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  maintenance:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-maintenance.yml@main
+    with:
+      days-before-issue-stale: 30
+      days-before-pr-stale: 45
+      days-before-issue-close: 5
+      days-before-pr-close: 10
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sync-labels:
+    name: 🏷️ Sync Labels from Standards
+    permissions:
+      issues: write
+      contents: read
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-label-sync.yml@main

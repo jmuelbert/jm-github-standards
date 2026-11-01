@@ -1,0 +1,83 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: 🏷️ Label synchronization
+
+on:
+  workflow_call:
+    inputs:
+      dry_run:
+        description: Preview changes without applying them
+        required: false
+        default: false
+        type: boolean
+      config_url:
+        description: URL to labels.json
+        required: false
+        default: https://raw.githubusercontent.com/jmuelbert/jm-github-standards/main/.github/config/labels.json
+        type: string
+      protected_patterns:
+        description: Regex patterns for protected labels (comma-separated)
+        required: false
+        default: ^(v\d+|github-|dependabot)
+        type: string
+
+# Required permissions
+# permissions:
+#   issues: write
+#   contents: read
+
+jobs:
+  label-sync:
+    runs-on: ubuntu-latest
+    outputs:
+      deleted_count: ${{ steps.sync.outputs.deleted_count }}
+      created_count: ${{ steps.sync.outputs.created_count }}
+      updated_count: ${{ steps.sync.outputs.updated_count }}
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+
+      - name: 📥 Checkout & download config
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+        with:
+          persist-credentials: false
+
+      - name: 🏷️ Sync labels
+        id: sync
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          CONFIG_URL: ${{ inputs.config_url }}
+          PROTECTED_PATTERNS: ${{ inputs.protected_patterns }}
+        run: |
+          bash .github/scripts/label-sync.sh
+
+      - name: 📋 Upload audit log
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # V7.0.1
+        with:
+          name: label-sync-audit-${{ github.run_id }}
+          path: sync-audit-*.log
+          retention-days: 90
+        continue-on-error: true
+
+      - name: 📊 Post summary
+        if: always()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
+          ## 🏷️ Label Synchronization
+          | Metric | Value |
+          |--------|-------|
+          | Created | ${STEPS_SYNC_OUTPUTS_CREATED_COUNT} |
+          | Updated | ${STEPS_SYNC_OUTPUTS_UPDATED_COUNT} |
+          | Deleted | ${STEPS_SYNC_OUTPUTS_DELETED_COUNT} |
+          | Dry Run | ${{ inputs.dry_run }} |
+          EOF
+        env:
+          STEPS_SYNC_OUTPUTS_CREATED_COUNT: ${{ steps.sync.outputs.created_count }}
+          STEPS_SYNC_OUTPUTS_UPDATED_COUNT: ${{ steps.sync.outputs.updated_count }}
+          STEPS_SYNC_OUTPUTS_DELETED_COUNT: ${{ steps.sync.outputs.deleted_count }}
