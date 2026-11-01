@@ -21,6 +21,7 @@ pnpm-lock.yaml
 # Ignore files handled by Biome
 **/*.js
 **/*.jsx
+**/*.mjs
 **/*.ts
 **/*.tsx
 **/*.html
