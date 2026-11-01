@@ -1,0 +1,71 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Shared CodeQL analysis
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      languages:
+        description: JSON array of languages (e.g. ["python", "javascript"])
+        type: string
+        # yamllint disable-line rule:quoted-strings
+        default: '["javascript"]' # if that empty, automatically javascript will be used
+
+# Required permissions
+# permissions:
+#   contents: read # Required to checkout the repository
+#   actions: read # Required to download some CodeQL packs
+#   security-events: write # Needed for Code scanning upload
+#   packages: read # Required to fetch internal or private CodeQL packs
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    timeout-minutes: 360
+    # Runner size impacts CodeQL analysis time. To learn more, please see:
+    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
+    #   - https://gh.io/supported-runners-and-hardware-resources
+    #   - https://gh.io/using-larger-runners (GitHub.com only)
+    # Consider using larger runners or machines with greater resources for possible analysis time improvements.
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # if there are no languages specified, use all supported languages
+        language: ${{ fromJSON(inputs.languages) }}
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4.36.0
+        with:
+          languages: ${{ matrix.language }}
+          # Allow the community security queries
+          queries: security-extended,security-and-quality
+
+      - name: 🚀 Auto Build for compilation
+        uses: github/codeql-action/autobuild@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4.36.0
+
+      - name: 🔍 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4.36.0
+        with:
+          category: /language:${{matrix.language}}
+          output: results

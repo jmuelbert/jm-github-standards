@@ -1,0 +1,71 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Shared mega-linter
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    # We stay flexible and allow upload of SARIF reports as default
+    inputs:
+      upload_sarif:
+        type: boolean
+        default: true
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+    # Give the default GITHUB_TOKEN read permission only
+    # (Since we aren't auto-committing fixes, we don't need 'write')
+    #
+  # Required permissions
+  # permissions:
+  #  contents: write
+  #  issues: write
+  #  pull-requests: write
+  #  security-events: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  megalinter:
+    name: 📊 Run MegaLinter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🔄  Run MegaLinter
+        # Use a fixed, stable version (v8 is current, or v7 if you prefer)
+        uses: oxsecurity/megalinter/flavors/cupcake@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9.5.0
+        env:
+          MEGALINTER_CONFIG: https://raw.githubusercontent.com/jmuelbert/jm-github-standards/main/.github/config/.mega-linter.yml
+          # --- Essential Configuration ---
+          REPORTERS: >-
+            GITHUB_SUMMARY,GITHUB_PR_ANNOTATIONS${{ inputs.upload_sarif == 'true' && ',SARIF' || '' }}
+
+          # We forces to upload SARIF reports
+          SARIF_REPORTER: ${{ inputs.upload_sarif }}
+          # 1. Provide the necessary token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # 2. Tell MegaLinter to run on the entire checked-out codebase
+          # This is simpler and more reliable than running on diffs.
+          VALIDATE_ALL_CODEBASE: true
+
+          # 3. Try to fix issues automatically
+          APPLY_FIXES: all
+          APPLY_FIXES_EVENT: pull_request
+          APPLY_FIXES_MODE: commit

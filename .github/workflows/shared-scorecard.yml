@@ -1,0 +1,60 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Shared Scorecard
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    inputs:
+      publish_results:
+        description: Publish results to OpenSSF
+        type: boolean
+        default: true
+    secrets:
+      SCORECARD_TOKEN:
+        description: Fine-grained PAT with read access to repo settings
+        required: false
+
+# Required permissions
+# permissions:
+#   contents: read
+#   actions: read
+#   security-events: write # Needed for Code scanning upload
+#   id-token: write # Needed for OIDC token
+#   pull-requests: read # Recommended for PR events
+
+jobs:
+  analyze:
+    name: Run Scorecard analysis
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🔍 Run Scorecard analysis
+        id: scorecard
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3
+        with:
+          results_file: scorecard.sarif
+          results_format: sarif
+          repo_token: ${{ secrets.SCORECARD_TOKEN || secrets.GITHUB_TOKEN }}
+          publish_results: ${{ inputs.publish_results }}
+
+      # Upload the results to GitHub's code scanning dashboard.
+      - name: 📤 Upload to code-scanning
+        uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4.36.0
+        with:
+          sarif_file: scorecard.sarif

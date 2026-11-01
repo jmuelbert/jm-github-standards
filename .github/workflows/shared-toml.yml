@@ -1,0 +1,37 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: TOML Validation
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+
+# Required permissions
+#    permissions:
+#      contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate-tom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: ⚙️ Install latest toml-tombi
+        uses: tombi-toml/setup-tombi@74c3f4f31e7915e27c3397831e4c628463e3e0da # v1.1.1
+
+      - name: Validate TOML files
+        run: tombi lint

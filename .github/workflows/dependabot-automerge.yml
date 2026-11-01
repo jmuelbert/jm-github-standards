@@ -1,0 +1,33 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Dependabot trigger
+
+# yamllint disable-line rule:truthy
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  call-shared-dependabot:
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    name: Dependabot auto-merge triggered by ${{ github.event_name }}
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependabot-merge.yml@main
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

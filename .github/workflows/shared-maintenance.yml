@@ -1,0 +1,157 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Repository maintenance
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    # Optional: Inputs for days before stale, if a repo wants to deviate
+    inputs:
+      days-before-issue-stale:
+        description: Days before an issue is considered stale
+        type: number
+        default: 30
+      days-before-pr-stale:
+        description: Days before a pull request is considered stale
+        type: number
+        default: 45
+      days-before-issue-close:
+        description: Days before an issue is closed due to inactivity
+        type: number
+        default: 5
+      days-before-pr-close:
+        description: Days before a pull request is closed due to inactivity
+        type: number
+        default: 10
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+# Required permissions
+# permissions:
+#   contents: write
+#   issues: write
+#   pull-requests: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  maintenance:
+    name: Cleanup & Welcome
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # 1. Greet New Contributors
+      - name: 👋 Welcome new contributors
+        uses: actions/first-interaction@1c4688942c71f71d4f5502a26ea67c331730fa4d # v3.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            ## Welcome to the Project! 🚀
+            Thank you for opening your first issue here. We appreciate your contribution to our standards!
+            Please make sure you have read the [Contribution Guidelines](https://github.com/jmuelbert/jm-github-standards/blob/main/.gitHub/CONTRIBUTING.md).
+          pr-message: |
+            ## Nice to meet you! 🥂
+            Thank you for your first Pull Request! Our maintainers will review your changes as soon as possible.
+            In the meantime, please ensure all CI checks are passing.
+
+      # 2. Process Stale Items with dynamic inputs
+      - name: 🧹 Process stale items
+        id: stale
+        uses: actions/stale@eb5cf3af3ac0a1aa4c9c45633dd1ae542a27a899 # v10.3.0
+        with:
+          # Issues configuration
+          stale-issue-message: This issue is stale because it has been inactive for ${{ inputs.days-before-issue-stale }} days.
+          close-issue-message: This issue was closed due to inactivity.
+          days-before-issue-stale: ${{ inputs.days-before-issue-stale }}
+          days-before-issue-close: ${{ inputs.days-before-issue-close }}
+          stale-issue-label: "status: stale" # Using your standard 'stale' label
+
+          # PR configuration
+          stale-pr-message: This PR is stale because it has been inactive for ${{ inputs.days-before-pr-stale }} days.
+          close-pr-message: This PR was closed due to inactivity.
+          days-before-pr-stale: ${{ inputs.days-before-pr-stale }}
+          days-before-pr-close: ${{ inputs.days-before-pr-close }}
+          stale-pr-label: "status: stale"
+
+          # Exemptions based on your labels.json
+          exempt-issue-labels: |
+            security
+            pinned
+            governance
+            bug
+            enhancement
+          exempt-pr-labels: |
+            security
+            pinned
+            dependencies
+
+          delete-branch: true
+          enable-statistics: true
+
+  link-drift-check:
+    name: Check for Link Rot
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: 💾 Cache Cargo registry and tools
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            ~/.cargo/bin/
+            target/
+          key: ${{ runner.os }}-cargo-lychee-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-lychee-
+
+      - name: ⚙️ Install latest Lychee CLI
+        run: |
+          if ! command -v lychee &> /dev/null; then
+            cargo install lychee --quiet
+          else
+            echo "Lychee found in cache, skipping installation."
+          fi
+
+      - name: 🔗 Check links (Lychee)
+        run: |
+          lychee --format markdown --output ./output.md --quiet .
+          echo "LYCHEE_EXIT_CODE=$?" >> "$GITHUB_ENV"
+        continue-on-error: true
+
+      - name: Create Issue on Failure
+        if: always() && env.LYCHEE_EXIT_CODE != '0'
+        uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6.0.0
+        with:
+          title: 🔗 Broken links detected
+          content-filepath: ./output.md
+          labels: governance, type-documentation, chore
+          update-existing: true

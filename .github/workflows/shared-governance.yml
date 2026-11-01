@@ -1,0 +1,127 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Shared Governance
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_call:
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+# Required permissions
+# permissions:
+#   contents: read
+#   pull-requests: write
+#   issues: write
+#   security-events: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # --- ISSUE MANAGEMENT ---
+  process-issue:
+    if: github.event_name == 'issues' || github.event_name == 'issue_comment'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout project
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: 🏛 Checkout standards
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          repository: jmuelbert/jm-github-standards
+          path: .jm-github-standards
+
+      - name: 🚀 Run issue automation
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            const { default: handleIssue } = await import('${{ github.workspace }}/.jm-github-standards/.github/scripts/issue-handler.js');
+            await handleIssue({ github, context, core });
+
+  # --- PR AUTOMATION ---
+  analyze-pr:
+    if: github.event_name == 'pull_request' && github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔒 Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: 🧰 Checkout project
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: 🏛 Checkout standards
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: jmuelbert/jm-github-standards
+          path: .jm-github-standards
+          persist-credentials: false
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@0e279bb959325dab635dd2c09392533439d90093 # v6.0.8
+        with:
+          run_install: false
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: .jm-github-standards/pnpm-lock.yaml
+
+      - name: 🛠 Install Tooling
+        run: pnpm install --frozen-lockfile
+        working-directory: .jm-github-standards
+
+      - name: 📏 Validate commits
+        run: |
+          pnpm --prefix .jm-github-standards commitlint \
+            --from "remotes/origin/${GITHUB_BASE_REF}" \
+            --to HEAD \
+            --verbose
+
+      - name: 🔍 Malware Scan (Malcontent)
+        id: malcontent
+        if: github.event_name == 'pull_request' && success() || failure()
+        uses: chainguard-dev/malcontent-action@053384afe0bb069ba7e2996bd8c0863731406002 # v0.4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fail-on-increase: false
+
+      - name: 📤 Upload SARIF
+        uses: github/codeql-action/upload-sarif@7211b7c8077ea37d8641b6271f6a365a22a5fbfa # v4.36.0
+        if: always() && steps.malcontent.outcome == 'success'
+        with:
+          sarif_file: ${{ steps.malcontent.outputs.sarif-file }}
+          category: malcontent
+
+      - name: 🏷️ Apply scope labels
+        uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
+        with:
+          configuration-path: .jm-github-standards/.github/config/labeler.yml
+
+      - name: 📝 Run PR automation script
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        id: pr-script
+        with:
+          script: |
+            const { default: automatePR } = await import('${{ github.workspace }}/.jm-github-standards/.github/scripts/pr-automation.js');
+            await automatePR({ github, context, core });

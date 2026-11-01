@@ -1,0 +1,36 @@
+---
+# SPDX-License-Identifier: EUPL-1.2
+# yamllint disable-line rule:line-length
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Governance trigger
+
+# yamllint disable-line rule:truthy
+on:
+  issues:
+    types: [opened, reopened, labeled]
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  governance:
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      security-events: write
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-governance.yml@main
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
