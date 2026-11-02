@@ -19,9 +19,6 @@ on:
         type: string
         default: ""
         description: Optional command to deploy documentation
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
     # Required permissions
     # permissions:

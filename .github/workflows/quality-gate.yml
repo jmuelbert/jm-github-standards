@@ -36,8 +36,6 @@ jobs:
       pull-requests: write
       security-events: write
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-megalinter.yml@main
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   biome-lint:
     name: Linting (Biome)
@@ -95,8 +93,8 @@ jobs:
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-scorecard.yml@main
     with:
       publish_results: true
-    secrets:
-      SCORECARD_TOKEN: ${{ secrets.JM_BOT_TOKEN }}
+    # secrets:
+    #  SCORECARD_TOKEN: ${{ secrets.JM_BOT_TOKEN }}
 
   # --- DEPENDENCY VALIDATION ---
   # Starts instantly. Essential for fast feedback on PRs.

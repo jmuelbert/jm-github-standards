@@ -13,9 +13,7 @@ on:
       upload_sarif:
         type: boolean
         default: true
-    secrets:
-      GITHUB_TOKEN:
-        required: true
+        
     # Give the default GITHUB_TOKEN read permission only
     # (Since we aren't auto-committing fixes, we don't need 'write')
     #
@@ -59,7 +57,7 @@ jobs:
           # We forces to upload SARIF reports
           SARIF_REPORTER: ${{ inputs.upload_sarif }}
           # 1. Provide the necessary token
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # 2. Tell MegaLinter to run on the entire checked-out codebase
           # This is simpler and more reliable than running on diffs.

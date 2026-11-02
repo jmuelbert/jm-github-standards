@@ -69,5 +69,3 @@ jobs:
       version: ${{ needs.prepare.outputs.next_version }}
       is_prerelease: ${{ needs.prepare.outputs.is_prerelease == 'true' }}
       doc_command: task docs:build
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

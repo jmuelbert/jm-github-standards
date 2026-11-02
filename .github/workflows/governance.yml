@@ -32,5 +32,3 @@ jobs:
       issues: write
       security-events: write
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-governance.yml@main
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

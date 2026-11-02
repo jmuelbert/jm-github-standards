@@ -26,9 +26,6 @@ on:
         description: Days before a pull request is closed due to inactivity
         type: number
         default: 10
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
 # Required permissions
 # permissions:
@@ -62,7 +59,6 @@ jobs:
       - name: 👋 Welcome new contributors
         uses: actions/first-interaction@1c4688942c71f71d4f5502a26ea67c331730fa4d # v3.0.0
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
             ## Welcome to the Project! 🚀
             Thank you for opening your first issue here. We appreciate your contribution to our standards!
