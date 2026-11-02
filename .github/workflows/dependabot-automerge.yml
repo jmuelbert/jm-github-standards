@@ -29,5 +29,3 @@ jobs:
       issues: write
     name: Dependabot auto-merge triggered by ${{ github.event_name }}
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependabot-merge.yml@main
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
