@@ -46,7 +46,7 @@ curl -sSL \
 
 log_section "🔍 Validating configuration"
 jq empty labels.json || error_exit "Invalid JSON"
-jq -e 'all(. ; has("name") and has("color"))' labels.json >/dev/null || error_exit "Missing required fields"
+jq -e 'all(.[]; has("name") and has("color"))' labels.json >/dev/null || error_exit "Missing required fields"
 
 label_count=$(jq 'length' labels.json)
 log "✅ Valid config with $label_count labels"
