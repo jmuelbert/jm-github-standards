@@ -1,0 +1,49 @@
+---
+title: Getting Started
+description: Der Einstieg in jm-github-standards – Struktur, Policies und Automatisierung für professionelle GitHub-Projekte.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+Willkommen bei **jm-github-standards**. Dieses Projekt bietet dir ein
+vorkonfiguriertes Fundament, um GitHub-Repositories nach modernen
+Open-Source-Standards zu strukturieren und zu automatisieren.
+
+## Das Konzept
+
+Das Ziel ist es, die wiederholbare, allgemeine Struktur von GitHub-Projekten zu
+vereinheitlichen. Dabei setzen wir auf:
+
+- **Offenheit:** Einhaltung gängiger Open-Source-Community-Policies.
+- **Qualität:** Automatisierung durch validierte `shared-workflows`.
+- **Standardisierung:** Nutzung von SPDX für Lizenzen und SemVer für
+ Versionierung.
+
+## Die drei Säulen deines Repos
+
+<CardGrid>
+  <Card title="Repository Policies" icon="document">
+    Standardisierte Dateien für `CODE_OF_CONDUCT`, `CONTRIBUTING`, `SECURITY` etc., um eine professionelle Governance zu
+    gewährleisten.
+  </Card>
+  <Card title="Shared Workflows" icon="seti:github">
+    Ein Set aus CI/CD-Pipelines (Biome, CodeQL, Megalinter...), die zentral gewartet und in deine Repos eingebunden
+    werden.
+  </Card>
+  <Card title="Compliance & Versionierung" icon="approve-check">
+    Durchgängige Nutzung von SPDX-Lizenzen und SemVer-konforme Releases für maximale Nachvollziehbarkeit.
+  </Card>
+</CardGrid>
+
+## Die nächsten Schritte
+
+1. **Governance & Policies:** Überprüfe die im Ordner `.github/` hinterlegten
+   Standard-Dokumente und passe sie projektspezifisch an.
+2. **Workflows einbinden:** Nutze die bereitgestellten `shared-workflows`, um
+   deine CI/CD-Pipeline aufzubauen.
+3. **Dokumentation:** Pflege deine Projektdetails in dieser Astro-basierten Dokumentationsstruktur.
+
+---
+
+_Benötigst du Hilfe bei der Integration eines spezifischen Workflows? Besuche
+ unsere [Dokumentations-Sektion zu den Workflows](/workflows/overview)._

@@ -1,0 +1,14 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Light Logo</title>
+  <!-- Hintergrund-Kreis (optional, für Kontrast) -->
+  <rect width="40" height="40" rx="8" fill="#1e293b"/>
+
+  <!-- Left bracket/ Structure -->
+  <path d="M14 12L10 20L14 28" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!--  Right core / Focus -->
+  <path d="M26 12L30 20L26 28" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Central block "Standard" -->
+  <rect x="17" y="17" width="6" height="6" rx="1" fill="#f8fafc"/>
+</svg>

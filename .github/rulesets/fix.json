@@ -1,31 +1,31 @@
 {
-  "name": "fix",
-  "target": "branch",
-  "enforcement": "active",
-  "conditions": {
-    "ref_name": {
-      "exclude": [],
-      "include": [
-        "refs/heads/fix/*",
-        "refs/heads/fixture/*",
-        "refs/heads/hotfix/*",
-        "refs/heads/bugfix/*"
-      ]
-    }
-  },
-  "rules": [
-    {
-      "type": "deletion"
-    },
-    {
-      "type": "non_fast_forward"
-    }
-  ],
-  "bypass_actors": [
-    {
-      "actor_id": 5,
-      "actor_type": "RepositoryRole",
-      "bypass_mode": "always"
-    }
-  ]
+	"name": "fix",
+	"target": "branch",
+	"enforcement": "active",
+	"conditions": {
+		"ref_name": {
+			"exclude": [],
+			"include": [
+				"refs/heads/fix/*",
+				"refs/heads/fixture/*",
+				"refs/heads/hotfix/*",
+				"refs/heads/bugfix/*"
+			]
+		}
+	},
+	"rules": [
+		{
+			"type": "deletion"
+		},
+		{
+			"type": "non_fast_forward"
+		}
+	],
+	"bypass_actors": [
+		{
+			"actor_id": 5,
+			"actor_type": "RepositoryRole",
+			"bypass_mode": "always"
+		}
+	]
 }

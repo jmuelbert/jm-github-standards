@@ -1,0 +1,46 @@
+---
+title: Shared Workflows Overview
+description: A catalog of our standardized CI/CD workflows for automated repository quality, security, and release management.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+We provide a library of reusable GitHub Actions workflows. By centralizing
+these, we ensure that every repository in your ecosystem maintains the same
+high standards for quality, security, and release cycles.
+
+## Workflow Catalog
+
+| Workflow            | Trigger       | Primary Purpose                   |
+| :------------------ | :------------ | :-------------------------------- |
+| `shared-biome`      | PR / Push     | Code formatting & linting         |
+| `shared-codeql`     | PR / Schedule | Automated security analysis       |
+| `shared-megalinter` | PR            | Comprehensive code quality checks |
+| `shared-release`    | Tag / Manual  | Automated SemVer releases         |
+| `shared-label-sync` | Push          | Consistent issue/PR labeling      |
+
+## Architecture & Integration
+
+<CardGrid>
+  <Card title="Centralized Maintenance" icon="seti:github">
+    Updates to a workflow are propagated across all repositories immediately. No more manual sync of `.github/workflows`
+    files.
+  </Card>
+  <Card title="Modular Design" icon="puzzle">
+    Integrate only what you need. Each workflow is designed to be standalone, allowing you to compose your CI/CD
+    pipeline step-by-step.
+  </Card>
+</CardGrid>
+
+---
+
+## How to use them
+
+To integrate a workflow into your repository, add it to your `.github/workflows/`
+folder and point to the shared template:
+
+```yaml
+jobs:
+  lint:
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-biome.yml@v0.1.0
+```

@@ -1,0 +1,41 @@
+---
+// biome-ignore lint/correctness/noUnusedImports: Starlight Footer component used dynamically
+import Default from "@astrojs/starlight/components/Footer.astro";
+---
+
+<div class="starlight-footer-custom">
+  <Default {...Astro.props}><slot /></Default>
+
+  <div class="copyright-overlay">
+    <p>
+      © 2026 Jürgen Mülbert •
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+    </p>
+  </div>
+  <div>
+    <div id="wcb" class="carbonbadge"></div>
+    <script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" defer></script>
+  </div>
+</div>
+
+<style>
+  .starlight-footer-custom {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .copyright-overlay {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-hairline);
+    text-align: center;
+    font-size: var(--sl-text-xs);
+    color: var(--sl-color-gray-3);
+  }
+
+  .copyright-overlay a {
+    color: inherit;
+    text-decoration: underline;
+  }
+</style>

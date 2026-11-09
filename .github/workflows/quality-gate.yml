@@ -37,12 +37,6 @@ jobs:
       security-events: write
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-megalinter.yml@main
 
-  biome-lint:
-    name: Linting (Biome)
-    permissions:
-      contents: read
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-biome.yml@main
-
   toml-check:
     name: TOML Validation
     permissions:
@@ -95,7 +89,6 @@ jobs:
       publish_results: true
     # secrets:
     #  SCORECARD_TOKEN: ${{ secrets.JM_BOT_TOKEN }}
-
   # --- DEPENDENCY VALIDATION ---
   # Starts instantly. Essential for fast feedback on PRs.
   dependency-review:

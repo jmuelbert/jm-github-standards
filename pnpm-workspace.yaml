@@ -9,3 +9,10 @@ allowBuilds:
   core-js-pure: true
   lefthook: true
   sharp: false
+overrides:
+  re2js: ^2.9.0
+  katex: ^0.18.2
+  minimatch: ^11.0.1
+onlyBuiltDependencies:
+  - cspell
+  - lefthook

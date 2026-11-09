@@ -1,0 +1,4 @@
+[codespell]
+skip = *.po,*temp*,./cspell.json,./pnpm-lock.yaml,./docs/dist,./docs/src/content/i18n,./docs/src/content/docs/de/*
+count =t rue
+quiet-level = 7
