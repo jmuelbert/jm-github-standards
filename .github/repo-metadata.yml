@@ -6,7 +6,7 @@
 #  This file contains configuration for repository metadata and versioning.
 
 #  The target version for the next release (without 'v')
-target_version: 2.0.0
+target_version: 2.1.0
 # Controls whether the release is marked as a pre-release
 is_prerelease: true
 

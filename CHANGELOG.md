@@ -9,6 +9,8 @@ and this project follows [Semantic Versioning](https://semver.org/).
 ### Features
 
 - Change configurations and deps ([`30290cd`](https://github.com/jmuelbert/jm-github-standards/commit/30290cd0846b4c562e5086f559c037f0544f3778))
+- Fix, improve and adept to biome and rumdl ([`26a9b98`](https://github.com/jmuelbert/jm-github-standards/commit/26a9b982eecf5738c30bc0af3fea263ac29eafe6))
+- Remove the shared-biome wf ([`b8565c4`](https://github.com/jmuelbert/jm-github-standards/commit/b8565c45c18f06a79dd4bf3b23d1b80227fa3d1a))
 
 - Fix, improve and adept to biome and rumdl ([`26a9b98`](https://github.com/jmuelbert/jm-github-standards/commit/26a9b982eecf5738c30bc0af3fea263ac29eafe6))
 - Remove the shared-biome wf ([`b8565c4`](https://github.com/jmuelbert/jm-github-standards/commit/b8565c45c18f06a79dd4bf3b23d1b80227fa3d1a))
