@@ -1,0 +1,38 @@
+---
+title: Welcome to jm-github-standards
+description: The professional foundation for GitHub repositories. Automated, compliant, and standard-aligned.
+template: splash
+hero:
+  tagline: Reusable GitHub structures for the modern open-source era.
+  image:
+    file: ../../assets/logo.svg
+  actions:
+    - text: Get Started
+      icon: right-arrow
+      link: /getting-started/
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/jmuelbert/jm-github-standards
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+## Core Principles
+
+<CardGrid stagger>
+  <Card title="Centralized Tooling" icon="rocket">
+    Stop reinventing the wheel. Use our shared workflows to automate CI/CD, linting, and quality gates across all your
+    repositories.
+  </Card>
+  <Card title="Policy Compliance" icon="approve-check">
+    Automatic support for SPDX licensing, SemVer versioning, and community-standard governance files.
+  </Card>
+  <Card title="Consistent Standards" icon="setting">
+    Ensure your projects look and behave the same, making maintenance easier for you and your contributors.
+  </Card>
+  <Card title="Easy Documentation" icon="document">
+    Built on Astro & Starlight, providing your users with a fast, search-optimized, and beautiful documentation
+    experience.
+  </Card>
+</CardGrid>

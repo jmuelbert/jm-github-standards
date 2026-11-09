@@ -1,0 +1,85 @@
+---
+title: Repository Labels
+description: Definition and usage of our standardized GitHub repository labels.
+---
+
+We use an automated `label-sync` strategy to keep labels consistent across
+repositories. Labels are grouped by purpose. Some labels describe the type or
+topic of an issue or pull request; others indicate its priority, status, or
+the kind of change being made.
+
+## Core Labels
+
+| Label              | Description                                             |
+| :----------------- | :------------------------------------------------------ |
+| `bug`              | Indicates an unexpected problem or unintended behavior. |
+| `documentation`    | Relates to documentation and guides.                    |
+| `duplicate`        | The issue or pull request already exists.               |
+| `enhancement`      | Proposes a new feature or request.                      |
+| `good first issue` | A good starting point for newcomers to the project.     |
+| `help wanted`      | Extra attention or help is needed.                      |
+| `invalid`          | The issue or pull request does not appear to be valid.  |
+| `question`         | Requests further information or clarification.          |
+| `wontfix`          | The issue will not be worked on.                        |
+
+## Type Labels
+
+These labels categorize issues, often as part of triage.
+
+| Label                | Description                                                    |
+| :------------------- | :------------------------------------------------------------- |
+| `type-bug`           | Categorized as a bug by triage logic.                          |
+| `type-feature`       | Categorized as a feature request by triage logic.              |
+| `type-crash`         | Indicates an automatically detected system crash.              |
+| `type-investigation` | Categorized for technical investigation.                       |
+| `type-documentation` | Relates to broken links or formatting errors in documentation. |
+
+## Priority, Triage & Related Work
+
+| Label                 | Description                                        |
+| :-------------------- | :------------------------------------------------- |
+| `needs-triage`        | A new item awaiting classification.                |
+| `needs-investigation` | Requires deeper technical analysis.                |
+| `high-priority`       | On the critical path; address immediately.         |
+| `regression`          | Functionality that used to work but is now broken. |
+
+## Change Area & Maintenance Labels
+
+These labels describe the area or kind of work represented by a pull request.
+
+| Label          | Description                                     |
+| :------------- | :---------------------------------------------- |
+| `source`       | Changes to source code.                         |
+| `test`         | Changes to tests or test configuration.         |
+| `dependencies` | Package or build dependency updates.            |
+| `fix`          | Bug fixes.                                      |
+| `ci`           | Changes to CI/CD or GitHub configuration.       |
+| `chore`        | Maintenance work or tool configuration changes. |
+| `release`      | Changes related to a release.                   |
+
+## Update Scope Labels
+
+These labels indicate the SemVer scope of an update.
+
+| Label          | Description                                            |
+| :------------- | :----------------------------------------------------- |
+| `patch-update` | SemVer patch update.                                   |
+| `minor-update` | SemVer minor update.                                   |
+| `major-update` | SemVer major update that may include breaking changes. |
+
+## Security Labels
+
+| Label             | Description                            |
+| :---------------- | :------------------------------------- |
+| `security`        | A security vulnerability fix.          |
+| `security-review` | Requires a manual security review.     |
+| `security-label`  | Security-related content was detected. |
+
+## Status & Governance Labels
+
+| Label                      | Description                                            |
+| :------------------------- | :----------------------------------------------------- |
+| `status: work-in-progress` | The pull request is still being worked on.             |
+| `status: ready-for-review` | The pull request is ready for review.                  |
+| `status: stale`            | The item has been inactive for an extended period.     |
+| `governance`               | Relates to project standards, licenses, or compliance. |
