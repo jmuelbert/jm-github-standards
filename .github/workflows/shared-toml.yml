@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🔒 Harden Runner
-        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
         with:
           egress-policy: audit
 
@@ -31,7 +31,7 @@ jobs:
           persist-credentials: false
 
       - name: ⚙️ Install latest toml-tombi
-        uses: tombi-toml/setup-tombi@4039f278ab5f7cf5140af99e46986b412fc672ca # v1.9.5
+        uses: tombi-toml/setup-tombi@88295e71426671820b98934ea75ea352d73eba8b # v1.9.8
 
       - name: Validate TOML files
         run: tombi lint
