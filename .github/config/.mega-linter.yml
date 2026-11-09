@@ -22,24 +22,21 @@ ENABLE_LINTERS:
   # - CPP_CPPCHECK # C++ linter (cppcheck)
   # - CPP_CPPLINT # C++ linter (cpplint)
   # - CPP_CLANG_FORMAT # C++ linter (clang-format)
-  # - JAVASCRIPT_ES # JavaScript linter (ESLint) - Leave disabled,use biome from Workflow
-  # - JAVASCRIPT_PRETTIER # JavaScript formatter (prettier) - Leave disabled,use biome from Workflow
+  - JAVASCRIPT_BIOME # javascript and more
   # - POWERSHELL_POWERSHELL # PowerShell linter (PSScriptAnalyzer)
   # - POWERSHELL_POWERSHELL_FORMATTER # PowerShell formatter (PSScriptAnalyzer)
   # - PYTHON_PYRIGHT # Python linter (pyright)
   # - PYTHON_RUFF # Python linter (ruff)
   # - RUBY_RUBOCOP # Ruby linter (rubocop)
   # - RUST_CLIPPY # Rust linter (clippy)
+  - TYPESCRIPT_BIOME
 
   # 2. Formats
-  - JSON_JSONLINT # General JSON files
+  - JSON_BIOME
   - JSON_V8R # JSON schema validation
-  - JSON_PRETTIER # JSON formatter (prettier)
   - JSON_NPM_PACKAGE_JSON_LINT # Specific checks for package.json integrity (Keep this since you use pnpm)
-  - MARKDOWN_MARKDOWNLINT # Markdown file structure and style
-  - MARKDOWN_MARKDOWN_TABLE_FORMATTER # Markdown table formatter (markdown-table-formatter)
+  - MARKDOWN_RUMDL
   - XML_XMLLINT # XML linter (xmllint)
-  - YAML_PRETTIER # YAML formatter (prettier)
   - YAML_YAMLLINT # General YAML config files (CI, mkdocs, etc.)
   - YAML_V8R # YAML schema validation
 
@@ -59,10 +56,14 @@ ENABLE_LINTERS:
 
   # 4.1 Spelling & Style
   - SPELL_CSPELL # Spelling check (Crucial)
+  - SPELL_LYCHEE
   - SPELL_VALE # Documentation style and grammar check
+  - SPELL_CODESPELL
 
 DISABLE_ERRORS_LINTERS:
   - SPELL_CSPELL # Writing issues should not stop the build most of the time
+  - SPELL_LYCHEE
+  - SPELL_CODESPELL
   - SPELL_VALE
 
 # --- Configuration Arguments ---
@@ -85,7 +86,6 @@ EXCLUDED_DIRECTORIES:
   - .cspellcache
 
 # Excludes
-JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (docs/|\.github/styles/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (\.github/config|mkdocs.yml|pnpm-lock.yaml)
 
@@ -94,6 +94,12 @@ ACTION_ZIZMOR_UNSECURED_ENV_VARIABLES:
   - GITHUB_TOKEN
 
 BASH_SHELLCHECK_CONFIG_FILE: .github/config/.shellcheckrc
+
+# Biome settings
+JAVASCRIPT_BIOME_CONFIG_FILE: biome.jsonc
+TYPESCRIPT_BIOME_CONFIG_FILE: biome.jsonc
+CSS_BIOME_CONFIG_FILE: biome.jsonc
+GRAPHQL_BIOME_CONFIG_FILE: biome.jsonc
 
 DOCKERFILE_HADOLINT_ARGUMENTS:
   - --ignore DL3003
