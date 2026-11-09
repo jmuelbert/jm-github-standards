@@ -34,7 +34,7 @@ path = [
   "**.ico",
   "README.md",
   "CHANGELOG.md",
-  ".github/*.md",  # Alle .md Files direkt in .github (CONTRIBUTING etc.)
+  ".github/*.md",  # All .md files directly in .github (CONTRIBUTING, etc.)
   ".github/ISSUE_TEMPLATE/**",
   ".github/DISCUSSION_TEMPLATE/**",
 ]
@@ -59,13 +59,13 @@ path = [
   "lefthook.yml",
   "Taskfile.yml",
 ]
-# Wir nehmen hier die Vale-Styles NICHT rein, da sie eine echte Lizenz (MIT) haben
+# # We’re not including the Vale styles here because they have an actual license (MIT).
 precedence = "override"
 
 # ---------------------------------------------------------
 # STEP 5: Third-Party Content (Highest Precedence)
 # ---------------------------------------------------------
-# Diese Regel steht ganz unten, damit sie ALLES oben drüber für diese Pfade überschreibt.
+# This rule is at the very bottom so it overrides EVERYTHING above it for these paths.
 [[annotations]]
 SPDX-FileCopyrightText = "Microsoft Corporation, proselint contributors, errata-ai"
 SPDX-License-Identifier = "MIT"
