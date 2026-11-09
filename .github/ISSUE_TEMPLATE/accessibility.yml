@@ -1,0 +1,126 @@
+---
+name: Accessibility issue
+description: Report an accessibility barrier in jm-github-standards.
+title: "[a11y]: <short description of the issue>"
+labels: [accessibility]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting an accessibility issue. Your report helps make jm-github-standards and the projects using its standards easier to use and contribute to.
+
+        Share only what you're comfortable sharing. Partial reports are useful, and you don't need to disclose a diagnosis or other personal information.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Briefly describe the accessibility barrier.
+      placeholder: "Example: A workflow's failure output is difficult to identify when using a screen reader."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      description: Select the part of the project where you encountered the issue.
+      options:
+        - Documentation (Astro/Starlight)
+        - GitHub Actions or reusable workflows
+        - Repository configuration or tooling
+        - Contributor or maintainer workflow
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Affected file, workflow, command, or documentation section
+      description: Identify where you encountered the issue, if known.
+      placeholder: "Example: .github/workflows/shared-biome.yml or the local development guide"
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Describe how to reproduce the issue, if possible.
+      placeholder: |
+        1. Open or run the affected file, workflow, command, or documentation.
+        2. Follow the relevant steps.
+        3. Describe the barrier you encountered.
+    validations:
+      required: true
+
+  - type: textarea
+    id: supporting-material
+    attributes:
+      label: Supporting material (optional)
+      description: Add a screenshot, recording, terminal output, or code sample if it helps explain the issue. Remove sensitive information before sharing.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity (maintainers may adjust this during triage)
+      description: |
+        How much does this issue affect your ability to use or contribute to the project?
+        - Critical: Prevents a core task, such as reading the documentation or completing a contribution workflow.
+        - Serious: Causes significant difficulty, but a workaround exists.
+        - Moderate: Causes noticeable difficulty or an inconsistent experience.
+        - Minor: Has a small effect on usability.
+      options:
+        - Critical
+        - Serious
+        - Moderate
+        - Minor
+      default: 3
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Relevant environment (optional)
+      description: Include details that help reproduce the issue, such as operating system, browser, shell, or assistive technology. You do not need to provide assistive-technology information.
+      placeholder: "Example: Ubuntu 24.04, Firefox, bash"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Share any workaround, related issue, or other detail that may help us investigate.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: code-of-conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow the project's Code of Conduct.
+      options:
+        - label: I agree to follow this project's Code of Conduct.
+          required: true
