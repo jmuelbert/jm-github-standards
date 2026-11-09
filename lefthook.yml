@@ -16,16 +16,12 @@ pre-commit:
       run: pnpm run docs:cspell
 
     # 3. Frontend / Web (The core of your current project)
+    # 4. Configs (Since you use YAML for standards)
     # We use {staged_files} to lint ONLY what you changed.
     # This is much faster than linting the whole project every time.
-    lint-js:
-      glob: "*.{js,jsx,ts,tsx}"
-      run: pnpm run lint:biome {staged_files}
-
-    # 4. Configs (Since you use TOML/YAML for standards)
-    # lint-configs:
-    #   glob: "*.{yaml,yml}"
-    #   run: uv run yamllint -c .yamllint.yml .
+    lint-biome:
+      glob: "*.{js,jsx,ts,tsx,json,jsonc,yaml,yml,md,mdx}"
+      run: pnpm exec biome ci .
 
     # 5. Configs (Since you use TOML for standards)
     lint-toml:
@@ -35,8 +31,13 @@ pre-commit:
     # 5. Documentation
     lint-docs:
       glob: "*.{md,markdown,mdx,adoc,asciidoc}"
-      run: pnpm run docs:lint
+      run: pnpm lint:markdown
 
+    # 6. Compliance with the REUSE guidelines
+    # lint-licenses:
+    #  run: uvx run reuse
+
+    # 7. Check commit
     cliff-check:
       glob: "*.md"
       run: pnpm exec git-cliff --config .github/config/cliff.toml --output CHANGELOG.md --unreleased
