@@ -8,15 +8,15 @@ eeef
 esac
 fbca
 fsfe
+katex
 mikepenz
 mkdocs
 ossf
 pyproject
 pytest
 rhysd
-RUBOCOP
 rubocop
-SARIF
+rumdl
 sarif
 SHFMT
 shfmt

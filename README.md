@@ -1,4 +1,6 @@
-# 🏗️ jm-github-standards
+# jm-github-standards
+
+<!-- rumdl-disable MD033 -->
 
 <div align="center">
 
@@ -24,11 +26,12 @@
 [![Docs][documentation-badge]][documentation-link]
 
 </div>
-
+<!-- rumdl-enable MD033 -->
 ---
 
-This repository is the **Central Governance & CI/CD Engine** for my GitHub ecosystem. It provides reusable workflows
-and serves as the authoritative **blueprint** for language-specific projects.
+This repository is the **Central Governance & CI/CD Engine** for my GitHub
+ecosystem. It provides reusable workflows and serves as the authoritative
+**blueprint** for language-specific projects.
 
 ## 🚀 Key Features
 
@@ -42,7 +45,8 @@ and serves as the authoritative **blueprint** for language-specific projects.
 Beyond shared actions, this repository provides **standardized configurations**:
 
 - **Tooling:** Modern stacks using `pnpm` and `go-task`.
-- **Documentation:** A performant **Astro** setup, strictly validated via `cspell` and `vale`.
+- **Documentation:** A performant **Astro** setup, strictly validated via `cspell`
+  and `vale`.
 
 ## 🛠️ Local Development
 
@@ -69,7 +73,7 @@ jobs:
 
 **Explore our full documentation at: [https://jmuelbert.github.io/jm-github-standards/](https://jmuelbert.github.io/jm-github-standards/)**
 
-- - **Contributing:** Check out our [Contributing Guidelines][contributing-guidelines-link].
+- **Contributing:** Check out our [Contributing Guideline[contributing-guidelines-link].
 - **Discussions:** Join our [Discussions][discussions-link].
 
 ---
@@ -79,7 +83,8 @@ jobs:
 This project follows a dual-licensing strategy:
 
 - **Code & Workflows:** Licensed under the [European Public License 1.2][eupl-link].
-- **Documentation:** Licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)][cc-link].
+- **Documentation:** Licensed under
+  [Creative Commons Attribution 4.0 International (CC BY 4.0)][cc-link].
 - **Compliance:** [REUSE compliant][license-link]
 
 <!-- Project -->
