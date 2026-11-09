@@ -62,7 +62,7 @@ jobs:
 
       - name: 📝 Generate changelog
         run: |
-          git-cliff --config ${{ inputs.changelog_config }} --output CHANGELOG.md
+          pnpm exec git-cliff --config .github/config/cliff.toml --output CHANGELOG.md
 
       - name: 📤 Commit CHANGELOG.md
         run: |
