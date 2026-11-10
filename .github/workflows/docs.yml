@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
+
+name: Deploy documentation
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "astro.config.*"
+  workflow_dispatch:
+
+# Nur ein Deployment gleichzeitig, laufende Deployments nicht abbrechen
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  docs:
+    name: Documentation
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-astro.yml@main
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    with:
+      build_command: pnpm build
+      output_dir: dist
