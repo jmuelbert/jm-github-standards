@@ -1,4 +1,3 @@
----
 # SPDX-License-Identifier: EUPL-1.2
 # SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
 
@@ -8,6 +7,10 @@ name: Release
 on:
   push:
     branches: [main]
+    # Nur Änderungen an der Metadaten-Datei können ein Release auslösen
+    paths:
+      - ".github/repo-metadata.yml"
+  workflow_dispatch:
 
 # Prevent multiple release workflows from running simultaneously
 concurrency:
@@ -24,9 +27,12 @@ jobs:
   prepare:
     name: Prepare release metadata
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       next_version: ${{ steps.get-version.outputs.version }}
       is_prerelease: ${{ steps.get-version.outputs.prerelease }}
+      should_release: ${{ steps.decide.outputs.should_release }}
     steps:
       - name: 🔒 Harden Runner
         uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
@@ -36,6 +42,7 @@ jobs:
       - name: 🧰 Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: 2
           persist-credentials: false
 
       - name: 🏷️ Extract metadata
@@ -55,17 +62,63 @@ jobs:
             exit 1
           fi
 
+      - name: 🔍 Decide whether a release is needed
+        id: decide
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.get-version.outputs.version }}
+        run: |
+          META=".github/repo-metadata.yml"
+
+          # Liefert "version|prerelease" aus einer Metadaten-Datei
+          read_fields() {
+            local file="$1"
+            local ver pre
+            ver=$(sed -n 's/^target_version:[[:space:]]*//p' "$file" | tr -d "'\" ")
+            pre=$(sed -n 's/^is_prerelease:[[:space:]]*//p' "$file" | tr -d "'\" ")
+            echo "${ver}|${pre}"
+          }
+
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            # Manueller Start: Vergleich überspringen, nur die Existenzprüfung gilt
+            echo "Manueller Start, Änderungsprüfung wird übersprungen."
+          else
+            CURRENT="$(read_fields "$META")"
+
+            # Stand vor dem Commit (erster Parent bei Merge-Commits)
+            if git cat-file -e "HEAD~1:$META" 2>/dev/null; then
+              git show "HEAD~1:$META" > /tmp/previous-meta.yml
+              PREVIOUS="$(read_fields /tmp/previous-meta.yml)"
+            else
+              PREVIOUS=""
+            fi
+
+            if [ "$CURRENT" = "$PREVIOUS" ]; then
+              echo "Keine Änderung an target_version oder is_prerelease, kein Release."
+              echo "should_release=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
+
+          # Gibt es das Release bereits? Dann nicht erneut erstellen
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "Release $VERSION existiert bereits, kein neuer Lauf nötig."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Release $VERSION wird erstellt."
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          fi
+
   # Job 2: Call Shared Workflow
   call-release:
     name: Execute release
     needs: [prepare]
+    if: needs.prepare.outputs.should_release == 'true'
     permissions:
+      pull-requests: write
       contents: write
-      pages: write
-      id-token: write
     # Using the shared workflow for standardized release logic
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-base.yml@main
     with:
       version: ${{ needs.prepare.outputs.next_version }}
       is_prerelease: ${{ needs.prepare.outputs.is_prerelease == 'true' }}
-      doc_command: task docs:build

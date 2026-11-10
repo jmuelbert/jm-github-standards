@@ -35,29 +35,26 @@ footer = """
 """
 
 [git]
-# Nur Conventional Commits berücksichtigen
 conventional_commits = true
 filter_commits = true
 
-# Commit-Typen kategorisieren
 commit_parsers = [
+  # Dependabot-Commits anhand des Autors ausfiltern
+  { field = "author.name", pattern = "dependabot\\[bot\\]", skip = true },
+  { message = "^chore\\(deps\\)", skip = true },
+  { message = "^build\\(deps", skip = true },
+
+  # Den automatischen Changelog-Commit nicht übernehmen
+  { message = "^docs: update changelog", skip = true },
+
   { message = "^feat", group = "Features" },
   { message = "^fix", group = "Bug Fixes" },
   { message = "^doc", group = "Documentation" },
   { message = "^perf", group = "Performance" },
   { message = "^refactor", group = "Refactoring" },
   { message = "^test", group = "Testing" },
-  { message = "^chore\\(deps\\)", skip = true },  # Dependabot ausfiltern
-  { message = "^chore\\(dependabot\\)", skip = true },  # Dependabot ausfiltern
-  { message = "^chore", skip = true },  # Andere chores ausfiltern
-  { body = "dependabot", skip = true },  # Im Body: dependabot
+  { message = "^chore", skip = true },
 ]
 
-# Preprocessor: Dependabot-PRs complete ignore
-commit_preprocessors = [
-  { pattern = "(?i)dependabot", replace = "" },
-  { pattern = "(?i)automated|bump|update|upgrade", skip = true },
-]
-
-# Ignore tags that not follow the defined scheme
+# Tags, die nicht dem Schema folgen, ignorieren
 skip_tags = "v0\\.0\\.|beta|alpha|rc"
