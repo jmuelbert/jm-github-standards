@@ -60,7 +60,7 @@ default_extension = "md"
 ############################# Requests  ############################
 
 # User agent to send with each request.
-user_agent = "curl/7.83. 1"
+user_agent = "curl/7.83.1"
 
 # Website timeout from connect to response finished.
 timeout = 20
@@ -92,7 +92,7 @@ header = { "accept" = "text/html", "x-custom-header" = "value" }
 
 # Fallback extensions to apply when a URL does not specify one.
 # This is common in documentation tools that cross-reference files without extensions.
-fallback_extensions = ["md", "html"]
+fallback_extensions = ["md", "mdx", "html"]
 
 # Base URL or website root directory to check relative URLs.
 # base_url = "https://example.com"
