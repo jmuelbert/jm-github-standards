@@ -1,3 +1,4 @@
+---
 # SPDX-License-Identifier: EUPL-1.2
 # SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
 
@@ -7,9 +8,9 @@ name: Release
 on:
   push:
     branches: [main]
-    # Nur Änderungen an der Metadaten-Datei können ein Release auslösen
+    # Only changes to the metadata file can trigger a release.
     paths:
-      - ".github/repo-metadata.yml"
+      - .github/repo-metadata.yml
   workflow_dispatch:
 
 # Prevent multiple release workflows from running simultaneously

@@ -1,3 +1,4 @@
+---
 # SPDX-License-Identifier: EUPL-1.2
 # SPDX-FileCopyrightText: 2026-present Jürgen Mülbert <juergen.muelbert@gmail.com>
 
@@ -8,8 +9,8 @@ on:
   push:
     branches: [main]
     paths:
-      - "docs/**"
-      - "astro.config.*"
+      - docs/**
+      - astro.config.*
   workflow_dispatch:
 
 # Nur ein Deployment gleichzeitig, laufende Deployments nicht abbrechen
