@@ -15,16 +15,11 @@ on:
       changelog_config:
         type: string
         default: .github/config/cliff.toml
-      doc_command:
-        type: string
-        default: ""
-        description: Optional command to deploy documentation
 
-    # Required permissions
+    # Required permissions (vom aufrufenden Workflow zu setzen)
     # permissions:
     #  contents: write
-    #  pages: write
-    #  id-token: write
+    #  pull-requests: write
 
 defaults:
   run:
@@ -62,15 +57,9 @@ jobs:
 
       - name: 📝 Generate changelog
         run: |
-          pnpm exec git-cliff --config .github/config/cliff.toml --output CHANGELOG.md
-
-      - name: 📤 Commit CHANGELOG.md
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add CHANGELOG.md
-          git diff-index --quiet HEAD || git commit -m "docs: update changelog for ${{ inputs.version }}"
-          git push origin "${GITHUB_REF}"
+          pnpm exec git-cliff --config "${{ inputs.changelog_config }}" \
+            --tag "${{ inputs.version }}" \
+            --output CHANGELOG.md
 
       - name: 🚀 Create release
         env:
@@ -85,6 +74,53 @@ jobs:
             ${PRERELEASE_FLAG} \
             ${LATEST_FLAG}
 
+      - name: 📤 Create changelog pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          # Nur weitermachen, wenn sich die CHANGELOG.md tatsächlich geändert hat
+          if [ -z "$(git status --porcelain -- CHANGELOG.md)" ]; then
+            echo "CHANGELOG.md unverändert, kein PR nötig."
+            exit 0
+          fi
+
+          BASE_SHA="$(git rev-parse HEAD)"
+          BRANCH="changelog/${VERSION}-${GITHUB_RUN_ID}"
+
+          # Branch auf dem aktuellen Stand von main anlegen
+          gh api -X POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f ref="refs/heads/${BRANCH}" \
+            -f sha="${BASE_SHA}"
+
+          # Vorhandene Datei-SHA ermitteln (leer, falls Datei neu ist)
+          FILE_SHA="$(gh api "repos/${GITHUB_REPOSITORY}/contents/CHANGELOG.md?ref=${BRANCH}" --jq .sha 2>/dev/null || true)"
+
+          CONTENT="$(base64 -w0 CHANGELOG.md)"
+
+          # Commit über die API anlegen, dieser wird von GitHub signiert
+          if [ -n "${FILE_SHA}" ]; then
+            gh api -X PUT "repos/${GITHUB_REPOSITORY}/contents/CHANGELOG.md" \
+              -f message="docs: update changelog for ${VERSION}" \
+              -f content="${CONTENT}" \
+              -f branch="${BRANCH}" \
+              -f sha="${FILE_SHA}"
+          else
+            gh api -X PUT "repos/${GITHUB_REPOSITORY}/contents/CHANGELOG.md" \
+              -f message="docs: update changelog for ${VERSION}" \
+              -f content="${CONTENT}" \
+              -f branch="${BRANCH}"
+          fi
+
+          gh pr create \
+            --repo "${GITHUB_REPOSITORY}" \
+            --base main \
+            --head "${BRANCH}" \
+            --title "docs: update changelog for ${VERSION}" \
+            --body "Automatisch erzeugtes Changelog für Release ${VERSION}."
+
       - name: 🏷️ Update Floating Tags
         if: inputs.is_prerelease == false
         run: |
@@ -94,52 +130,8 @@ jobs:
           MINOR="v$(echo "$CLEAN_VER" | cut -d. -f1,2)"
 
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git tag -f "$MAJOR"
           git tag -f "$MINOR"
           git push origin "$MAJOR" "$MINOR" --force
-
-  deploy-docs:
-    name: Deploy documentation
-    needs: [release]
-    if: success() && inputs.doc_command != ''
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🔒 Harden Runner
-        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
-        with:
-          egress-policy: audit
-
-      - name: 🧰 Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
-        with:
-          run_install: false
-
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: lts/*
-          cache: pnpm
-
-      - name: 📦 Setup Task
-        uses: arduino/setup-task@v3
-        with:
-          version: 3.x
-
-      - name: 📥 Install Tooling Dependencies
-        run: task setup
-
-      - name: 📘 Build documentation
-        run: ${{ inputs.doc_command }} # Triggert deinen Astro-Build
-
-      - name: 📤 Upload Pages Artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda990898657 # v3.0.1
-        with:
-          path: ./dist # Stelle sicher, dass dies mit deinem Astro outDir übereinstimmt
-
-      - name: 🚀 Deploy to GitHub Pages
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

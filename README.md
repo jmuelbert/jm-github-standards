@@ -103,8 +103,8 @@ This project follows a dual-licensing strategy:
 [pipeline-link]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/shared-megalinter.yml
 [governance-badge]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/shared-governance.yml/badge.svg
 [governance-link]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/shared-governance.yml
-[docs-deploy-badge]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/docs-deployment.yml/badge.svg
-[docs-deploy-link]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/docs-deployment.yml
+[docs-deploy-badge]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/docs.yml/badge.svg
+[docs-deploy-link]: https://github.com/jmuelbert/jm-github-standards/actions/workflows/docs.yml
 [REUSE_badge]: https://api.reuse.software/badge/github.com/jmuelbert/jm-github-standards
 [REUSE_link]: https://api.reuse.software/info/github.com/jmuelbert/jm-github-standards
 
