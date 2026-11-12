@@ -4,16 +4,19 @@ All notable changes to this project will be documented in this file.
 
 This format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
+## [v2.4.0] - 2026-11-12
+
+### Bug Fixes
+
+- Call issue in the release workflow (#27) ([`d61d828`](https://github.com/jmuelbert/jm-github-standards/commit/d61d828f7166b4f8122b86d0bf3260d49b0dc448))
+- Permission issue ([`a0ebba2`](https://github.com/jmuelbert/jm-github-standards/commit/a0ebba2b6cf2aa6fde09418d70c9b51de79e1048))
+- The mailaddr for changelog commits (#29) ([`b1332a8`](https://github.com/jmuelbert/jm-github-standards/commit/b1332a88272ea3306dafbdfffff445551c2c28d7))
+- JSON validation for labels in label-sync.sh (#31) ([`5b8c51b`](https://github.com/jmuelbert/jm-github-standards/commit/5b8c51b75295dc592069fd24fbe78ad820faebcb))
+
 ## [v2.0.0-pre] - 2026-11-09
 
 ### Features
 
-- Change configurations and deps ([`30290cd`](https://github.com/jmuelbert/jm-github-standards/commit/30290cd0846b4c562e5086f559c037f0544f3778))
-- Fix, improve and adept to biome and rumdl ([`26a9b98`](https://github.com/jmuelbert/jm-github-standards/commit/26a9b982eecf5738c30bc0af3fea263ac29eafe6))
-- Remove the shared-biome wf ([`b8565c4`](https://github.com/jmuelbert/jm-github-standards/commit/b8565c45c18f06a79dd4bf3b23d1b80227fa3d1a))
-
-- Fix, improve and adept to biome and rumdl ([`26a9b98`](https://github.com/jmuelbert/jm-github-standards/commit/26a9b982eecf5738c30bc0af3fea263ac29eafe6))
-- Remove the shared-biome wf ([`b8565c4`](https://github.com/jmuelbert/jm-github-standards/commit/b8565c45c18f06a79dd4bf3b23d1b80227fa3d1a))
 - Replace prettier and markdownlint (#25) ([`5cc95a2`](https://github.com/jmuelbert/jm-github-standards/commit/5cc95a23c08fbfe208f75963847260a44471fa55))
 
 ## [v1.1.0-pre] - 2026-11-02
