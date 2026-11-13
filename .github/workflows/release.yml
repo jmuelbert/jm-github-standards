@@ -119,7 +119,7 @@ jobs:
       pull-requests: write
       contents: write
     # Using the shared workflow for standardized release logic
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-base.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-release-base.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
     with:
       version: ${{ needs.prepare.outputs.next_version }}
       is_prerelease: ${{ needs.prepare.outputs.is_prerelease == 'true' }}
