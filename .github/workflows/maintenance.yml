@@ -23,11 +23,12 @@ defaults:
 
 jobs:
   maintenance:
+    name: Cleanup
     permissions:
       contents: write
       issues: write
       pull-requests: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-maintenance.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-maintenance.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
     with:
       days-before-issue-stale: 30
       days-before-pr-stale: 45
@@ -39,4 +40,4 @@ jobs:
     permissions:
       issues: write
       contents: read
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-label-sync.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-label-sync.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0

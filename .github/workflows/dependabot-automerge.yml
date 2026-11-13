@@ -28,4 +28,4 @@ jobs:
       pull-requests: write
       issues: write
     name: Dependabot auto-merge triggered by ${{ github.event_name }}
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependabot-merge.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependabot-merge.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
