@@ -20,6 +20,10 @@ concurrency:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   docs:
     name: Documentation
@@ -30,4 +34,4 @@ jobs:
       id-token: write
     with:
       build_command: pnpm build
-      output_dir: dist
+      output_dir: docs/dist
