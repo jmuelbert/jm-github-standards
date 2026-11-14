@@ -8,7 +8,7 @@ name: Quality gate trigger
 # yamllint disable-line rule:truthy
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
     types: [opened, synchronize, ready_for_review]
   schedule:
@@ -35,13 +35,13 @@ jobs:
       issues: write
       pull-requests: write
       security-events: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-megalinter.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-megalinter.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
 
   toml-check:
     name: TOML Validation
     permissions:
       contents: read
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-toml.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-toml.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
 
   # --- DOCUMENTATION ---
   # Starts instantly. This includes your optimized Lychee link checker!
@@ -50,7 +50,7 @@ jobs:
     permissions:
       contents: read
       issues: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-validation.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-validation.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
 
   # --- COMPLIANCE ---
   # Starts instantly now.
@@ -58,7 +58,7 @@ jobs:
     name: License check
     permissions:
       contents: read
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-reuse.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-reuse.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
 
   # --- SECURITY ---
   # Starts instantly. Security should never wait for style checks.
@@ -71,7 +71,7 @@ jobs:
       security-events: write
       pull-requests: write
       issues: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-codeql-analysis.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-codeql-analysis.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
     with:
       # yamllint disable-line rule:quoted-strings
       languages: '["javascript", "typescript"]'
@@ -84,7 +84,7 @@ jobs:
       security-events: write # Needed for Code scanning upload
       id-token: write # Needed for OIDC token
       pull-requests: read # Recommended for PR events
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-scorecard.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-scorecard.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
     with:
       publish_results: true
     # secrets:
@@ -96,4 +96,4 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependency-review.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-dependency-review.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
