@@ -34,6 +34,6 @@ jobs:
       pages: write
       id-token: write
     with:
-      build_command: pnpm build
+      build_command: pnpm docs:build
       output_dir: docs/dist
 
