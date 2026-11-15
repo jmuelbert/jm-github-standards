@@ -36,4 +36,3 @@ jobs:
     with:
       build_command: pnpm docs:build
       output_dir: docs/dist
-

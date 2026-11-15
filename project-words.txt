@@ -9,7 +9,6 @@ esac
 fbca
 fsfe
 katex
-mailaddr
 mikepenz
 mkdocs
 ossf
