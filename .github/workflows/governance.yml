@@ -31,4 +31,4 @@ jobs:
       pull-requests: write
       issues: write
       security-events: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-governance.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-governance.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0

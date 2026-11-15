@@ -11,6 +11,7 @@ on:
     paths:
       - docs/**
       - astro.config.*
+      - .github/workflows/docs.yml
   workflow_dispatch:
 
 # Nur ein Deployment gleichzeitig, laufende Deployments nicht abbrechen
@@ -20,14 +21,18 @@ concurrency:
 
 permissions: {}
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   docs:
     name: Documentation
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-astro.yml@main
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-astro.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
     permissions:
       contents: read
       pages: write
       id-token: write
     with:
-      build_command: pnpm build
-      output_dir: dist
+      build_command: pnpm docs:build
+      output_dir: docs/dist

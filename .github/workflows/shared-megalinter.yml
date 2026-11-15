@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: 🔒 Harden Runner
-        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
@@ -47,7 +47,7 @@ jobs:
 
       - name: 🔄  Run MegaLinter
         # Use a fixed, stable version (v8 is current, or v7 if you prefer)
-        uses: oxsecurity/megalinter/flavors/cupcake@9949bad031045f366be2467e00e8371a7328a2e2 # v10.1.0
+        uses: oxsecurity/megalinter/flavors/cupcake@f2fe8c1cba37091848df3e524066c8c23ef353ed # v10.2.0
         env:
           MEGALINTER_CONFIG: https://raw.githubusercontent.com/jmuelbert/jm-github-standards/main/.github/config/.mega-linter.yml
           # --- Essential Configuration ---
