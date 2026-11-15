@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 This format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project follows [Semantic Versioning](https://semver.org/).
+## [v3.0.0] - 2026-11-15
+
+### Bug Fixes
+
+- Docs build (#45) ([`147a371`](https://github.com/jmuelbert/jm-github-standards/commit/147a371f9ca5441dee501b1c4a23bc7885c5ca4c))
+
+### Features
+
+- Separate codeql (#46) ([`3dcfd84`](https://github.com/jmuelbert/jm-github-standards/commit/3dcfd848f51de83bf4fcbfd8c3d0d9cb37923077))
+
+## [v2.5.2Ì] - 2026-11-13
+
+### Documentation
+
+- Patch the call for building docs (#41) ([`60a5bd1`](https://github.com/jmuelbert/jm-github-standards/commit/60a5bd14140c5677ff87236fa35619f355a2ee74))
+
 ## [v2.4.0] - 2026-11-12
 
 ### Bug Fixes
