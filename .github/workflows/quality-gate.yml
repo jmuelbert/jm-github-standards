@@ -62,19 +62,6 @@ jobs:
 
   # --- SECURITY ---
   # Starts instantly. Security should never wait for style checks.
-  security-scan:
-    name: Security scan
-    permissions:
-      contents: read
-      actions: read
-      packages: read
-      security-events: write
-      pull-requests: write
-      issues: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-codeql-analysis.yml@main
-    with:
-      # yamllint disable-line rule:quoted-strings
-      languages: '["javascript", "typescript"]'
 
   supply-chain:
     name: Supply chain
@@ -87,8 +74,8 @@ jobs:
     uses: jmuelbert/jm-github-standards/.github/workflows/shared-scorecard.yml@main
     with:
       publish_results: true
-    # secrets:
-    #  SCORECARD_TOKEN: ${{ secrets.JM_BOT_TOKEN }}
+    secrets:
+      SCORECARD_TOKEN: ${{ secrets.JM_BOT_TOKEN }}
   # --- DEPENDENCY VALIDATION ---
   # Starts instantly. Essential for fast feedback on PRs.
   dependency-review:
