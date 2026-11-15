@@ -6,6 +6,7 @@ import { defineConfig } from "astro/config";
 
 export default defineConfig({
 	site: "https://jmuelbert.github.io/jm-github-standards",
+	base: "/jm-github-standards",
 	markdown: {
 		processor: unified({
 			rehypePlugins: [rehypeHeadingIds],
