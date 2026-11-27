@@ -28,7 +28,7 @@ defaults:
 jobs:
   docs:
     name: Documentation
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-astro.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-docs-astro.yml@3dcfd848f51de83bf4fcbfd8c3d0d9cb37923077 #v3.0.0
     permissions:
       contents: read
       pages: write
