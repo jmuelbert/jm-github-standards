@@ -28,7 +28,7 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-maintenance.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-maintenance.yml@3dcfd848f51de83bf4fcbfd8c3d0d9cb37923077 #v3.0.0
     with:
       days-before-issue-stale: 30
       days-before-pr-stale: 45
@@ -40,4 +40,4 @@ jobs:
     permissions:
       issues: write
       contents: read
-    uses: jmuelbert/jm-github-standards/.github/workflows/shared-label-sync.yml@9d6401a4329d7ec61ee987fdcf05ca2b369cea27 #v2.5.0
+    uses: jmuelbert/jm-github-standards/.github/workflows/shared-label-sync.yml@3dcfd848f51de83bf4fcbfd8c3d0d9cb37923077 #v3.0.0
